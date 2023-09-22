@@ -22,4 +22,12 @@ export default defineConfig({
     },
   },
   clearScreen: false,
+  server: {
+    proxy: {
+      '/graphql': {
+        target: 'https://graphql.anilist.co',
+        changeOrigin: true,
+      },
+    },
+  },
 });

@@ -1,4 +1,18 @@
-export const messagesDe = {};
+export const messagesDe = {
+  manga: {
+    progress: 'Fortschritt',
+    score: 'Bewertung',
+    status: {
+      'paused': 'Pausiert',
+      'completed': 'Vollendet',
+      'reading': 'Lesen',
+      'planning': 'Geplant',
+      'dropped': 'Abgesetzt',
+    },
+    title: 'Titel',
+  },
+  search: 'Suche',
+};
 
 export const datetimeFormatsDe = {
   date: {

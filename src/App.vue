@@ -18,9 +18,9 @@ export default class App extends Vue {
 </script>
 
 <template>
-  <div>
+  <div class="d-flex flex-column h-100 w-100">
     <DocumentLocaleSetter/>
     <NavBar/>
-    <RouterView/>
+    <RouterView class="flex-grow-1"/>
   </div>
 </template>
