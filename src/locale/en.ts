@@ -1,9 +1,22 @@
 export const messagesEn = {
+  fetch: {
+    mangaUpdates: {
+      chapters: 'Chapters',
+      finished: 'Finished',
+      relations: 'Relations',
+      series: 'Series',
+      starting: 'Starting',
+    },
+  },
   locale: {
     'de': 'Deutsch',
     'en': 'English',
   },
   manga: {
+    chapters: {
+      newCount: '#new chapters',
+      latest: 'Last chapters',
+    },
     progress: 'Progress',
     score: 'Score',
     status: {

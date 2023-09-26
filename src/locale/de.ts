@@ -1,7 +1,21 @@
+import {messagesEn} from '@/locale/en';
 
 export const messagesDe = {
+  fetch: {
+    mangaUpdates: {
+      chapters: 'Kapitel',
+      finished: 'Fertig',
+      relations: 'Relationen',
+      series: 'Kapitel',
+      starting: 'Starte',
+    },
+  },
   locale: messagesEn.locale,
   manga: {
+    chapters: {
+      newCount: '#Neue Kapitel',
+      latest: 'Letzte Kapitel',
+    },
     progress: 'Fortschritt',
     score: 'Bewertung',
     status: {

@@ -1,30 +1,44 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import {AniListStore} from '@/stores/AniListStore';
+import {MangaStore} from '@/stores/MangaStore';
+import {ServiceStore} from '@/stores/ServiceStore';
+import {BSpinner} from 'bootstrap-vue-next';
 
 @Options({
   name: 'AniListUserSearch',
-  components: {},
+  components: {
+    BSpinner,
+  },
 })
 export default class AniListUserSearch extends Vue {
-  private aniListStore = new AniListStore();
+  searching = false;
 
-  private get userName(): string {
-    return this.aniListStore.userName ?? '';
+  get mangaStore(): MangaStore {
+    return new MangaStore();
   }
 
-  private set userName(val: string) {
-    this.aniListStore.setUserName(val);
+  get serviceStore(): ServiceStore {
+    return new ServiceStore();
+  }
+
+  get userName(): string {
+    return this.mangaStore.userName ?? '';
+  }
+
+  set userName(val: string) {
+    this.mangaStore.updateUserName(val);
   }
 
   mounted(): void {
     if (this.userName) {
-      this.onSearch();
+      this.mangaStore.reloadCache();
     }
   }
 
-  private onSearch(): void {
-    this.aniListStore.reload();
+  onSearch(): void {
+    this.searching = true;
+    this.serviceStore.aniListDataService.updateDb()
+        .finally(() => this.searching = false);
   }
 }
 
@@ -32,10 +46,11 @@ export default class AniListUserSearch extends Vue {
 
 <template>
   <div class="input-group">
-    <input class="form-control" type="search" :placeholder="$t('search')" aria-label="Search" v-model="userName"
-           @keydown.enter="onSearch">
-    <button class="btn btn-primary" @click="onSearch">
-      <i class="fa fa-search"></i>
+    <input v-model="userName" :disabled="searching" :placeholder="$t('search')" aria-label="Search" class="form-control"
+           type="search" @keydown.enter="onSearch">
+    <button :disabled="searching" class="btn btn-primary" @click="onSearch">
+      <BSpinner v-if="searching" small/>
+      <i v-else class="fa fa-search"></i>
     </button>
   </div>
 </template>

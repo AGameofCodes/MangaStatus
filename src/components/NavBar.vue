@@ -2,6 +2,7 @@
 import {Options, Vue} from 'vue-class-component';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import AniListUserSearch from '@/components/AniListUserSearch.vue';
+import MangaUpdatesUpdater from '@/components/MangaUpdatesUpdater.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 
 @Options({
@@ -10,6 +11,7 @@ import LocaleSelector from '@/components/locale/LocaleSelector.vue';
     AniListUserSearch,
     BootstrapThemeSwitch,
     LocaleSelector,
+    MangaUpdatesUpdater,
   },
 })
 export default class NavBar extends Vue {
@@ -51,7 +53,10 @@ export default class NavBar extends Vue {
 <!--          </li>-->
 <!--        </ul>-->
         <div class="mx-auto">
-          <AniListUserSearch/>
+          <div class="d-flex flex-row">
+            <AniListUserSearch class="mx-1"/>
+            <MangaUpdatesUpdater class="mx-1"/>
+          </div>
         </div>
         <div>
           <div class="d-flex flex-row align-items-center">

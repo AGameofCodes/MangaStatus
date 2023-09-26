@@ -28,6 +28,11 @@ export default defineConfig({
         target: 'https://graphql.anilist.co',
         changeOrigin: true,
       },
+      '^/mangaupdates/.*$': {
+        target: 'https://api.mangaupdates.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/mangaupdates/, ''),
+      },
     },
   },
 });
