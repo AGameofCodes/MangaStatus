@@ -3,10 +3,10 @@ import {Options, Vue} from 'vue-class-component';
 import {AniListStore} from '@/stores/AniListStore';
 
 @Options({
-  name: 'UserSearch',
+  name: 'AniListUserSearch',
   components: {},
 })
-export default class UserSearch extends Vue {
+export default class AniListUserSearch extends Vue {
   private aniListStore = new AniListStore();
 
   private get userName(): string {

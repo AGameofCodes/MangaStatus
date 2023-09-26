@@ -1,13 +1,13 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
-import UserSearch from '@/components/UserSearch.vue';
+import AniListUserSearch from '@/components/AniListUserSearch.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 
 @Options({
   name: 'NavBar',
   components: {
-    UserSearch,
+    AniListUserSearch,
     BootstrapThemeSwitch,
     LocaleSelector,
   },
@@ -51,7 +51,7 @@ export default class NavBar extends Vue {
 <!--          </li>-->
 <!--        </ul>-->
         <div class="mx-auto">
-          <UserSearch/>
+          <AniListUserSearch/>
         </div>
         <div>
           <div class="d-flex flex-row align-items-center">
