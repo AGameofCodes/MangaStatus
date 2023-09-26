@@ -15,6 +15,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import {createI18n} from '@/locale/locale';
 import 'vue3-toastify/dist/index.css';
 
+import './polyfill'
 
 const app = createApp(App);
 
