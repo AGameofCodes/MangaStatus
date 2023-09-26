@@ -8,9 +8,9 @@ import LocaleSaver from '@/components/locale/LocaleSaver.vue';
 @Options({
   name: 'App',
   components: {
-    NavBar,
     DocumentLocaleSetter,
     LocaleSaver,
+    NavBar,
     RouterView,
   },
 })
