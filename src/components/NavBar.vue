@@ -20,7 +20,7 @@ export default class NavBar extends Vue {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand">
+  <nav class="navbar navbar-expand border-bottom shadow">
     <div class="container-fluid">
       <!--      <a class="navbar-brand" href="#">Navbar</a>-->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
