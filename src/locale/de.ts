@@ -11,6 +11,7 @@ export const messagesDe = {
     },
   },
   locale: messagesEn.locale,
+  localStoragePersistNotSupported: 'Lokaler Speicher wird nicht permanent. Das könnte in längere Wartezeiten verursachen!',
   manga: {
     chapters: {
       newCount: '#Neue Kapitel',
