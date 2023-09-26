@@ -22,7 +22,3 @@ export function createI18n(): I18n {
     legacy: true,
   });
 }
-
-export function setDocumentLocale(locale: string): void {
-  document.documentElement.setAttribute("lang", locale);
-}

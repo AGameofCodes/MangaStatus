@@ -1,6 +1,5 @@
 <script lang="ts">
-import {Vue, Options} from 'vue-class-component';
-import {setDocumentLocale} from '@/locale/locale';
+import {Options, Vue} from 'vue-class-component';
 import {Watch} from 'vue-property-decorator';
 
 @Options({name: 'DocumentLocaleSetter'})
@@ -11,7 +10,11 @@ export default class DocumentLocaleSetter extends Vue {
 
   @Watch('$i18n.locale')
   onLocaleChanged(value: string): void {
-    setDocumentLocale(value);
+    this.setDocumentLocale(value);
+  }
+
+  setDocumentLocale(locale: string): void {
+    document.documentElement.setAttribute('lang', locale);
   }
 }
 </script>
