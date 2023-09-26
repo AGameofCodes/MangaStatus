@@ -1,4 +1,6 @@
+
 export const messagesDe = {
+  locale: messagesEn.locale,
   manga: {
     progress: 'Fortschritt',
     score: 'Bewertung',

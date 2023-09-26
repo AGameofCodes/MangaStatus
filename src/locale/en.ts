@@ -1,4 +1,8 @@
 export const messagesEn = {
+  locale: {
+    'de': 'Deutsch',
+    'en': 'English',
+  },
   manga: {
     progress: 'Progress',
     score: 'Score',

@@ -2,12 +2,14 @@
 import {Options, Vue} from 'vue-class-component';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import UserSearch from '@/components/UserSearch.vue';
+import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 
 @Options({
   name: 'NavBar',
   components: {
     UserSearch,
     BootstrapThemeSwitch,
+    LocaleSelector,
   },
 })
 export default class NavBar extends Vue {
@@ -52,7 +54,10 @@ export default class NavBar extends Vue {
           <UserSearch/>
         </div>
         <div>
-          <BootstrapThemeSwitch/>
+          <div class="d-flex flex-row align-items-center">
+            <LocaleSelector class="ms-2"/>
+            <BootstrapThemeSwitch class="ms-2"/>
+          </div>
         </div>
       </div>
     </div>
