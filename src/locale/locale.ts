@@ -14,8 +14,15 @@ const datetimeFormats = {
 };
 
 export function createI18n(): I18n {
+  let browserLocale = (navigator.language ?? '').toLowerCase();
+  const match = browserLocale.match(/^([a-z][a-z])/);
+  if (match) {
+    browserLocale = match[1];
+  } else {
+    browserLocale = 'en';
+  }
   return vueCreateI18n({
-    locale: 'de',
+    locale: browserLocale,
     fallbackLocale: 'en',
     messages: messages,
     datetimeFormats: datetimeFormats,
