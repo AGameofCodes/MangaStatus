@@ -38,6 +38,7 @@ export default class MangaLists extends Vue {
   }
 
   get viewLists(): ViewList[] {
+    const order = ['reading', 'paused', 'planning', 'completed', 'dropped'];
     const lists = this.mangaStore.aniListLists;
     const manga = this.mangaStore.aniListManga;
 
@@ -56,7 +57,8 @@ export default class MangaLists extends Vue {
           chapters: chapters,
         } as ViewEntry);
       }),
-    }));
+    }))
+        .sort((l, r) => order.indexOf(l.list.name.toLowerCase()) - order.indexOf(r.list.name.toLowerCase()));
   }
 }
 </script>
