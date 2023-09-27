@@ -10,8 +10,11 @@ export default class MangaUpdatesDataService {
     const mangaStore = new MangaStore();
     const dbStore = new DbStore();
     this.findMissingRelations(mangaStore, dbStore, progress)
+      .catch(_ => {})
       .then(_ => this.fetchSeriesUpdates(mangaStore, dbStore, progress))
+      .catch(_ => {})
       .then(_ => this.fetchSeriesChapterUpdates(mangaStore, dbStore, progress))
+      .catch(_ => {})
       .then(_ => progress.onFinished());
     return progress;
   }
