@@ -27,11 +27,21 @@ export default defineConfig({
       '/graphql': {
         target: 'https://graphql.anilist.co',
         changeOrigin: true,
+        configure: (proxy, options) => {
+          proxy.on('proxyRes', proxyRes => {
+            delete proxyRes.headers['set-cookie'];
+          });
+        },
       },
       '^/mangaupdates/.*$': {
         target: 'https://api.mangaupdates.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/mangaupdates/, ''),
+        configure: (proxy, options) => {
+          proxy.on('proxyRes', proxyRes => {
+            delete proxyRes.headers['set-cookie'];
+          });
+        },
       },
     },
   },
