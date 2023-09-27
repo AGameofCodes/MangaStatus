@@ -62,7 +62,19 @@ export default class MangaLists extends Vue {
 </script>
 
 <template>
-  <div class="overflow-y-auto p-3">
+  <div class="overflow-y-auto manga-lists">
     <MangaList v-for="viewList in viewLists" :key="viewList.list.name" :viewList="viewList" class="mb-3"/>
   </div>
 </template>
+
+<style lang="scss">
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
+
+@include media-breakpoint-up(sm) {
+  .manga-lists {
+    padding: 1rem !important;
+  }
+}
+</style>
