@@ -147,48 +147,6 @@ export default class MangaListTable extends Vue {
       </div>
     </template>
   </BTable>
-  <!--    <table class="table table-striped manga-table mb-1">-->
-  <!--      <thead>-->
-  <!--        <tr>-->
-  <!--          <th></th>-->
-  <!--          <th>{{ $t('manga.title') }}</th>-->
-  <!--          <th class="text-end">{{ $t('manga.score') }}</th>-->
-  <!--          <th class="text-end">{{ $t('manga.progress') }}</th>-->
-  <!--          <th class="text-end">{{ $t('manga.chapters.newCount') }}</th>-->
-  <!--          <th>{{ $t('manga.chapters.latest') }}</th>-->
-  <!--        </tr>-->
-  <!--      </thead>-->
-  <!--      <tbody>-->
-  <!--        <tr v-for="entry in tableEntries">-->
-  <!--          <td><img :src="entry.media?.coverImage.large" alt="cover-img" class="list-cover"/></td>-->
-  <!--          <td>-->
-  <!--            &lt;!&ndash;            <div class="d-flex flex-column h-100">&ndash;&gt;-->
-  <!--            <div class="flex-grow-1">-->
-  <!--              <div>{{ entry.media?.title.userPreferred }}</div>-->
-  <!--              <div>{{ entry.media?.title.english }}</div>-->
-  <!--            </div>-->
-  <!--            <div v-if="entry.relation" style="font-size: 0.5em">-->
-  <!--              MangaUpdates:-->
-  <!--              <template v-if="entry.series">{{ entry.series.title }}</template>-->
-  <!--            </div>-->
-  <!--            &lt;!&ndash;            </div>&ndash;&gt;-->
-  <!--          </td>-->
-  <!--          <td class="text-end">{{ entry.entry.score }}</td>-->
-  <!--          <td class="text-end" style="min-width: 5rem">-->
-  <!--            {{ entry.entry.progress + ' / ' + (entry.media?.chapters ?? '?') }}-->
-  <!--          </td>-->
-  <!--          <td class="text-end" style="min-width: 5rem">-->
-  <!--            {{ newChapterCount(entry) }}-->
-  <!--          </td>-->
-  <!--          <td style="min-width: 5rem">-->
-  <!--            <div v-for="c in latestChaptersSorted(entry)">-->
-  <!--              {{ c.chapter + ' (' + c.group + ')' }}-->
-  <!--            </div>-->
-  <!--          </td>-->
-  <!--        </tr>-->
-  <!--      </tbody>-->
-  <!--    </table>-->
-  <!--  </div>-->
 </template>
 
 <style lang="scss">
