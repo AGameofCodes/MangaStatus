@@ -5,7 +5,7 @@ import DocumentLocaleSetter from '@/components/locale/DocumentLocaleSetter.vue';
 import NavBar from '@/components/NavBar.vue';
 import LocaleSaver from '@/components/locale/LocaleSaver.vue';
 import StoragePersist from '@/components/StoragePersist.vue';
-import SideBar from '@/components/SideBar.vue';
+import SideBar from '@/components/sidebar/SideBar.vue';
 
 @Options({
   name: 'App',

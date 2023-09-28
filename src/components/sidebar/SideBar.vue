@@ -1,10 +1,10 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import SideBarNavItem from '@/components/SideBarNavItem.vue';
+import SideBarNavItem from '@/components/sidebar/SideBarNavItem.vue';
 import {Prop} from 'vue-property-decorator';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
-import SideBarHead from '@/components/SideBarHead.vue';
+import SideBarHead from '@/components/sidebar/SideBarHead.vue';
 
 @Options({
   name: 'SideBar',
