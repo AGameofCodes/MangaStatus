@@ -76,7 +76,16 @@ export default class MangaListTable extends Vue {
 
   newChapterCount(entry: ViewEntry): number {
     const max = entry.media?.chapters || entry.chapters.reduce((l, r) => Math.max(l, r.chapter), 0);
-    return max === 0 ? 0 : max - entry.entry.progress;
+    return Math.max(0, max - entry.entry.progress);
+  }
+
+  lastestChapterString(entry: ViewEntry): string {
+    if (entry.media?.chapters) {
+      return '' + entry.media.chapters;
+    } else if (entry.chapters.length) {
+      return entry.chapters.reduce((l, r) => Math.max(l, r.chapter), 0) + '+';
+    }
+    return '?';
   }
 
   latestChaptersSorted(entry: ViewEntry): MangaUpdatesChapter[] {
@@ -135,7 +144,7 @@ export default class MangaListTable extends Vue {
       <div class="table-header-desktop"> {{ hd(data).label }}</div>
     </template>
     <template #cell(entry.progress)="data">
-      {{ cd(data).value + ' / ' + (cd(data).item.media?.chapters ?? '?') }}
+      {{ cd(data).value + '/' + lastestChapterString(cd(data).item) }}
     </template>
     <template #head(newChapters)="data">
       <div class="table-header-mobile"><i class="fa fa-plus" style="color: var(--bs-success)"/></div>
