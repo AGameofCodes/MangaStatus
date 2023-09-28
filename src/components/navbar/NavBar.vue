@@ -1,8 +1,8 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
-import AniListUserSearch from '@/components/AniListUserSearch.vue';
-import MangaUpdatesUpdater from '@/components/MangaUpdatesUpdater.vue';
+import AniListUserSearch from '@/components/navbar/AniListUserSearch.vue';
+import MangaUpdatesUpdater from '@/components/navbar/MangaUpdatesUpdater.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 
 @Options({
