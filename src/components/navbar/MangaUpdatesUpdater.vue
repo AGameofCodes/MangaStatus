@@ -50,20 +50,18 @@ export default class MangaUpdatesUpdater extends Vue {
 </script>
 
 <template>
-  <div class="d-flex flex-row">
-    <button :disabled="!!progressType" class="btn btn-secondary" @click="onUpdateMangaUpdatesDb">
-      <i v-if="!progressType" class="fa fa-refresh"/>
-      <template v-else>
-        <span class="text-nowrap">
-          <BSpinner small class="me-2"/>
-          <template v-if="progressValue === null || progressMax === null">
-            {{ $t('fetch.mangaUpdates.' + progressType) }}
-          </template>
-          <template v-else>
-            {{ $t('fetch.mangaUpdates.' + progressType) + ': ' + (progressValue ?? 0) + '/' + (progressMax ?? 1) }}
-          </template>
-        </span>
-      </template>
-    </button>
-  </div>
+  <button :disabled="!!progressType" class="btn btn-secondary" @click="onUpdateMangaUpdatesDb">
+    <i v-if="!progressType" class="fa fa-refresh"/>
+    <template v-else>
+      <span class="text-nowrap">
+        <BSpinner small class="me-2"/>
+        <template v-if="progressValue === null || progressMax === null">
+          {{ $t('fetch.mangaUpdates.' + progressType) }}
+        </template>
+        <template v-else>
+          {{ $t('fetch.mangaUpdates.' + progressType) + ': ' + (progressValue ?? 0) + '/' + (progressMax ?? 1) }}
+        </template>
+      </span>
+    </template>
+  </button>
 </template>
