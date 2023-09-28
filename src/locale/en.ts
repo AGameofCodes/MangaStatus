@@ -14,7 +14,7 @@ export const messagesEn = {
     'de': 'Deutsch',
     'en': 'English',
   },
-  localStoragePersistNotSupported: 'Locale storage will not be persisted. This could result in longer loading times!',
+  localStoragePersistNotSupported: 'Local storage will not be persisted. This could result in longer loading times!',
   manga: {
     chapters: {
       newCount: '#new chapters',
