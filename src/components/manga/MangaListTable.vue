@@ -65,7 +65,7 @@ export default class MangaListTable extends Vue {
       key: 'latestChapters',
       label: this.$t('manga.chapters.latest'),
       sortable: true,
-      tdClass: 'manga-column-latest-chapters text-nowrap',
+      tdClass: 'manga-column-latest-chapters',
       thClass: 'manga-column-latest-chapters',
     }];
   }
@@ -171,12 +171,12 @@ export default class MangaListTable extends Vue {
 //cover
 .manga-table .list-cover {
   max-width: var(--manga-cover-size);
-  //height: var(--manga-cover-size);
+  max-height: calc(var(--manga-cover-size) * 2);
   object-fit: cover;
   border-radius: calc(var(--manga-cover-size) / 16);
 }
 
-//disable bottom board on last row
+//disable bottom border on last row
 .manga-table > :not(caption) tr:last-child td {
   border-bottom-width: 0;
 }
