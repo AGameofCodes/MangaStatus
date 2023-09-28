@@ -1,4 +1,5 @@
 export const messagesEn = {
+  design: 'Design',
   fetch: {
     mangaUpdates: {
       chapters: 'Chapters',
@@ -8,7 +9,8 @@ export const messagesEn = {
       starting: 'Starting',
     },
   },
-  locale: {
+  locale: 'Language',
+  locales: {
     'de': 'Deutsch',
     'en': 'English',
   },

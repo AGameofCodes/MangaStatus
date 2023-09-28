@@ -5,6 +5,7 @@ import DocumentLocaleSetter from '@/components/locale/DocumentLocaleSetter.vue';
 import NavBar from '@/components/NavBar.vue';
 import LocaleSaver from '@/components/locale/LocaleSaver.vue';
 import StoragePersist from '@/components/StoragePersist.vue';
+import SideBar from '@/components/SideBar.vue';
 
 @Options({
   name: 'App',
@@ -13,20 +14,26 @@ import StoragePersist from '@/components/StoragePersist.vue';
     LocaleSaver,
     NavBar,
     RouterView,
+    SideBar,
     StoragePersist,
   },
 })
 export default class App extends Vue {
+  sidebarToggled = false;
 }
 
 </script>
 
 <template>
-  <div class="d-flex flex-column h-100 w-100">
+  <div class="h-100 w-100">
     <LocaleSaver/>
     <DocumentLocaleSetter/>
     <StoragePersist/>
-    <NavBar/>
-    <RouterView class="flex-grow-1"/>
+    <SideBar ref="sidebar" class="h-100 w-100" :toggled="sidebarToggled"
+             @close="sidebarToggled=false"/>
+    <div class="d-flex flex-column h-100 w-100">
+      <NavBar @toggleSidebar="sidebarToggled = !sidebarToggled"/>
+      <RouterView class="flex-grow-1"/>
+    </div>
   </div>
 </template>

@@ -13,8 +13,8 @@ export default class LocaleSelector extends Vue {
 
   get supportedLocales(): { value: string, text: string } [] {
     return [
-      {value: 'en', text: this.$t('locale.en')},
-      {value: 'de', text: this.$t('locale.de')},
+      {value: 'en', text: this.$t('locales.en')},
+      {value: 'de', text: this.$t('locales.de')},
     ];
   }
 }

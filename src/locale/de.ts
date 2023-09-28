@@ -1,6 +1,7 @@
 import {messagesEn} from '@/locale/en';
 
 export const messagesDe = {
+  design: 'Design',
   fetch: {
     mangaUpdates: {
       chapters: 'Kapitel',
@@ -10,7 +11,8 @@ export const messagesDe = {
       starting: 'Starte',
     },
   },
-  locale: messagesEn.locale,
+  locale: 'Sprache',
+  locales: messagesEn.locales,
   localStoragePersistNotSupported: 'Lokaler Speicher wird nicht permanent. Das könnte in längere Wartezeiten verursachen!',
   manga: {
     chapters: {
