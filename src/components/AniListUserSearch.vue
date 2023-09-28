@@ -45,7 +45,7 @@ export default class AniListUserSearch extends Vue {
 </script>
 
 <template>
-  <div class="input-group">
+  <div class="input-group flex-nowrap">
     <input v-model="userName" :disabled="searching" :placeholder="$t('search')" aria-label="Search" class="form-control"
            type="search" @keydown.enter="onSearch">
     <button :disabled="searching" class="btn btn-primary" @click="onSearch">
