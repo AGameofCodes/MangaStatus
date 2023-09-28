@@ -46,11 +46,21 @@ export default class MangaUpdatesUpdater extends Vue {
     this.progressValue = null;
     this.progressMax = null;
   }
+
+  get progressStyle(): any {
+    if (this.progressValue === null || this.progressMax === null) {
+      return {};
+    }
+    return {
+      '--progress-value': this.progressValue / this.progressMax,
+    };
+  }
 }
 </script>
 
 <template>
-  <button :disabled="!!progressType" class="btn btn-secondary" @click="onUpdateMangaUpdatesDb">
+  <button :disabled="!!progressType" class="btn btn-secondary progress-btn" :style="progressStyle"
+          @click="onUpdateMangaUpdatesDb">
     <i v-if="!progressType" class="fa fa-refresh"/>
     <template v-else>
       <span class="text-nowrap">
@@ -65,3 +75,14 @@ export default class MangaUpdatesUpdater extends Vue {
     </template>
   </button>
 </template>
+
+<style>
+.progress-btn {
+  --progress-value: 0;
+  background: linear-gradient(to right,
+  var(--bs-success),
+  var(--bs-success) calc(var(--progress-value) * 100%),
+  var(--bs-btn-bg) calc(var(--progress-value) * 100%),
+  var(--bs-btn-bg));
+}
+</style>
