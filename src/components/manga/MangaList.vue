@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import MangaListTable from '@/components/MangaListTable.vue';
+import MangaListTable from '@/components/manga/MangaListTable.vue';
 import type {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
 import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {AniListMangaList} from '@/data/models/anilist/AniListMangaList';

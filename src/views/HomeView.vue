@@ -1,6 +1,6 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import MangaLists from '@/components/MangaLists.vue';
+import MangaLists from '@/components/manga/MangaLists.vue';
 
 @Options({
   name: 'HomeView',

@@ -4,7 +4,7 @@ import {Prop, Watch} from 'vue-property-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
 import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
-import type {ViewEntry, ViewList} from '@/components/MangaList.vue';
+import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 
 type HeadData<I> = {
   label: string,
