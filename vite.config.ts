@@ -18,7 +18,7 @@ export default defineConfig({
     manifest: true,
     emptyOutDir: false,
     rollupOptions: {
-      input: './src/main.ts',
+      input: ['./src/main.ts', './index.html'],
     },
   },
   clearScreen: false,
