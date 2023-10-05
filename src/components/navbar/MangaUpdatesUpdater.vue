@@ -17,13 +17,19 @@ export default class MangaUpdatesUpdater extends Vue {
   progressValue: number | null = null;
   progressMax: number | null = null;
 
+  wakeLock: WakeLockSentinel | null = null;
+
   get serviceStore(): ServiceStore {
     return new ServiceStore();
   }
 
   //event handler
-  onUpdateMangaUpdatesDb(): void {
+  async onUpdateMangaUpdatesDb(): Promise<void> {
     this.progressType = 'starting';
+    try {
+      this.wakeLock = await navigator.wakeLock.request();
+    } catch (_) {
+    }
     this.serviceStore.mangaUpdatesDataService.updateDb(this.progress);
   };
 
@@ -35,13 +41,20 @@ export default class MangaUpdatesUpdater extends Vue {
   }
 
   onFinished(): void {
+    this.wakeLock?.release();
+    this.wakeLock = null;
+
     this.progressType = 'finished';
     this.progressValue = null;
     this.progressMax = null;
+
     setTimeout(() => this.onReset(), 3000);
   }
 
   onReset(): void {
+    this.wakeLock?.release();
+    this.wakeLock = null;
+
     this.progressType = null;
     this.progressValue = null;
     this.progressMax = null;
