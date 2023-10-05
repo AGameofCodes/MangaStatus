@@ -1,4 +1,7 @@
 export const messagesEn = {
+  aniList: {
+    username: 'AniList username',
+  },
   design: 'Design',
   fetch: {
     mangaUpdates: {

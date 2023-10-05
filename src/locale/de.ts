@@ -1,6 +1,9 @@
 import {messagesEn} from '@/locale/en';
 
 export const messagesDe = {
+  aniList: {
+    username: 'AniList Benutzername',
+  },
   design: 'Design',
   fetch: {
     mangaUpdates: {
