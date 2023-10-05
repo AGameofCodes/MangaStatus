@@ -22,5 +22,5 @@ export type AniListMedia = {
   countryOfOrigin: 'JP' | 'KR' | string,
   genres: string[],
   bannerImage: string, //url
-  startDate: any,
+  startDate: { year: number, month: number, day: number },
 }
