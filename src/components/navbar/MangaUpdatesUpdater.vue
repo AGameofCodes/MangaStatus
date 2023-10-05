@@ -34,7 +34,6 @@ export default class MangaUpdatesUpdater extends Vue {
   };
 
   onProgress(type: string, progress: number, max: number): void {
-    // console.log(type, progress, max);
     this.progressType = type;
     this.progressValue = progress;
     this.progressMax = max;
