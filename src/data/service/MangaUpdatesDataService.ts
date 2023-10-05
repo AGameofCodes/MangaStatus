@@ -2,6 +2,9 @@ import MangaUpdatesApi from '@/data/api/MangaUpdatesApi';
 import {DbStore} from '@/stores/DbStore';
 import {MangaStore} from '@/stores/MangaStore';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
+import type {MangaUpdatesSearchResultRecord} from '@/data/models/mangaupdates/MangaUpdatesSearchResultRecord';
+import stringSimilarity from 'string-similarity-js';
+import {ApiError} from '@/data/api/ApiUtils';
 
 export default class MangaUpdatesDataService {
   private readonly mangaUpdatesApi = new MangaUpdatesApi();
@@ -10,11 +13,17 @@ export default class MangaUpdatesDataService {
     const mangaStore = new MangaStore();
     const dbStore = new DbStore();
     this.findMissingRelations(mangaStore, dbStore, progress)
-      .catch(_ => {})
+      .catch(err => {
+        console.error(err);
+      })
       .then(_ => this.fetchSeriesUpdates(mangaStore, dbStore, progress))
-      .catch(_ => {})
+      .catch(err => {
+        console.error(err);
+      })
       .then(_ => this.fetchSeriesChapterUpdates(mangaStore, dbStore, progress))
-      .catch(_ => {})
+      .catch(err => {
+        console.error(err);
+      })
       .then(_ => progress.onFinished());
     return progress;
   }
@@ -33,16 +42,38 @@ export default class MangaUpdatesDataService {
           continue;
         }
 
-        const results = await this.mangaUpdatesApi.search(m.title.romaji);
-        const matching = results.results
-          .filter(e => allowTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
-          .filter(e => m.startDate.year - 1 <= e.record.year && e.record.year <= m.startDate.year + 1); //check year +-1
+        let matching: { record: MangaUpdatesSearchResultRecord }[] = [];
+        for (let title of [m.title.native, m.title.romaji, m.title.english]) {
+          if (!title?.trim().length) {
+            continue;
+          }
+          let results;
+          try {
+            results = await this.mangaUpdatesApi.search(title);
+          } catch (err) {
+            if (err instanceof ApiError && [400, 500].includes(err.statusCode)) {
+              console.debug(err);
+            } else {
+              console.error(err);
+            }
+            continue;
+          } finally {
+            await new Promise((r) => setTimeout(r, 1000));
+          }
+          matching = results.results
+            .filter(e => stringSimilarity(title, e.record.title, 2, false) >= 0.95)
+            .filter(e => allowTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
+            .filter(e => m.startDate.year - 1 <= e.record.year && e.record.year <= m.startDate.year + 1); //check year +-1
+          if (matching.length === 0) {
+            continue;
+          }
+          break;
+        }
         if (matching.length === 0) {
           continue;
         }
 
         await mangaStore.addMangaUpdatesRelations([{aniListMediaId: m.id, mangaUpdatesSeriesId: matching[0].record.series_id}]);
-        await new Promise((r) => setTimeout(r, 1000));
       } finally {
         await progress.onProgress('relations', ++i, media.length);
       }
@@ -60,7 +91,19 @@ export default class MangaUpdatesDataService {
           continue;
         }
 
-        const series = await this.mangaUpdatesApi.get(relation.mangaUpdatesSeriesId);
+        let series;
+        try {
+          series = await this.mangaUpdatesApi.get(relation.mangaUpdatesSeriesId);
+        } catch (err) {
+          if (err instanceof ApiError && [400, 500].includes(err.statusCode)) {
+            console.debug(err);
+          } else {
+            console.error(err);
+          }
+          continue;
+        } finally {
+          await new Promise((r) => setTimeout(r, 1000));
+        }
         await mangaStore.updateMangaUpdatesSeries([series]);
       } finally {
         await progress.onProgress('series', ++i, relations.length);
@@ -79,7 +122,19 @@ export default class MangaUpdatesDataService {
         //   continue;
         // }
 
-        const groups = await this.mangaUpdatesApi.groups(s.series_id);
+        let groups;
+        try {
+          groups = await this.mangaUpdatesApi.groups(s.series_id);
+        } catch (err) {
+          if (err instanceof ApiError && [400, 500].includes(err.statusCode)) {
+            console.debug(err);
+          } else {
+            console.error(err);
+          }
+          continue;
+        } finally {
+          await new Promise((r) => setTimeout(r, 1000));
+        }
 
         const updates = groups.release_list
           .map(r => {

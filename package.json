@@ -23,6 +23,7 @@
     "idb": "^7.1.1",
     "pinia": "^2.1.6",
     "pinia-class-component": "^0.9.4",
+    "string-similarity-js": "^2.1.4",
     "vue": "^3.3.4",
     "vue-class-component": "^8.0.0-rc.1",
     "vue-good-table-next": "^0.2.1",
