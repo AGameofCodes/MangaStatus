@@ -1,4 +1,4 @@
-import type {SearchResultRecord} from '@/data/models/mangaupdates/MangaUpdateSearchResult';
+import type {MangaUpdatesSearchResultRecord} from '@/data/models/mangaupdates/MangaUpdatesSearchResultRecord';
 import type {MangaUpdatesSearchResultMetaData} from '@/data/models/mangaupdates/MangaUpdatesSearchResultMetaData';
 
 export type MangaUpdatesSearchResult = {
@@ -6,7 +6,7 @@ export type MangaUpdatesSearchResult = {
   'page': number,
   'per_page': number,
   'results': [{
-    'record': SearchResultRecord,
+    'record': MangaUpdatesSearchResultRecord,
     'hit_title': string,
     'metadata': MangaUpdatesSearchResultMetaData
   }]

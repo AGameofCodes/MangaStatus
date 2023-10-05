@@ -1,4 +1,4 @@
-import {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
+import type {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
 
 export type AniListMangaList = {
   name: 'Paused' | 'Completed' | 'Planning' | 'Dropped' | 'Reading',

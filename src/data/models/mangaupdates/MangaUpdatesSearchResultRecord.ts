@@ -1,4 +1,4 @@
-export type SearchResultRecord = {
+export type MangaUpdatesSearchResultRecord = {
   'series_id': number,
   'title': string,
   'url': string,
