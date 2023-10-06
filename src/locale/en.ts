@@ -39,6 +39,11 @@ export const messagesEn = {
     },
     title: 'Title',
   },
+  mangaupdates: {
+    relation: {
+      found: 'found',
+    },
+  },
   search: 'Search',
   wakeLock: {
     notSupported: 'Wake lock is not supported! The device could pause the sync function.',

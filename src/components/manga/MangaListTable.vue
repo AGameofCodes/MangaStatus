@@ -124,11 +124,16 @@ export default class MangaListTable extends Vue {
         <div>{{ cd(data).item.media?.title.native }}</div>
         <div>{{ cd(data).item.media?.title.english }}</div>
       </div>
-      <div v-if="cd(data).item.relation" style="font-size: 0.5em">
-        MangaUpdates:
-        <a v-if="cd(data).item.series" :href="cd(data).item.series!.url" target="_blank">
-          {{ cd(data).item.series!.title }}
-        </a>
+      <div v-if="cd(data).item.relation" class="d-flex flex-row" style="font-size: 0.5em">
+        <span>
+          MangaUpdates:&nbsp;
+        </span>
+        <template v-if="cd(data).item.series">
+          <a :href="cd(data).item.series!.url" target="_blank">
+            {{ cd(data).item.series!.title }}
+          </a>
+        </template>
+        <span v-else>{{ $t('mangaupdates.relation.found') }}</span>
       </div>
     </template>
     <template #head(entry.score)="data">

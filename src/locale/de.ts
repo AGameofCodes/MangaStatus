@@ -38,6 +38,11 @@ export const messagesDe = {
     },
     title: 'Titel',
   },
+  mangaupdates: {
+    relation: {
+      found: 'gefunden',
+    },
+  },
   search: 'Suche',
   wakeLock: {
     notSupported: 'Wake lock wird nicht unterstützt! Das Gerät könnte Sync-Funktion unterbrechen.',
