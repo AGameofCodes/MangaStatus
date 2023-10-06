@@ -102,7 +102,7 @@ export default class MangaUpdatesDataService {
           }
           continue;
         } finally {
-          await new Promise((r) => setTimeout(r, 1000));
+        //   await new Promise((r) => setTimeout(r, 1000));
         }
         await mangaStore.updateMangaUpdatesSeries([series]);
       } finally {
@@ -133,7 +133,7 @@ export default class MangaUpdatesDataService {
           }
           continue;
         } finally {
-          await new Promise((r) => setTimeout(r, 1000));
+          // await new Promise((r) => setTimeout(r, 1000));
         }
 
         const updates = groups.release_list
