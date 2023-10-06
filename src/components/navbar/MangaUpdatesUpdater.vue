@@ -23,6 +23,15 @@ export default class MangaUpdatesUpdater extends Vue {
     return new ServiceStore();
   }
 
+  get progressStyle(): any {
+    if (this.progressValue === null || this.progressMax === null) {
+      return {};
+    }
+    return {
+      '--progress-value': this.progressValue / this.progressMax,
+    };
+  }
+
   //event handler
   async onUpdateMangaUpdatesDb(): Promise<void> {
     this.progressType = 'starting';
@@ -57,15 +66,6 @@ export default class MangaUpdatesUpdater extends Vue {
     this.progressType = null;
     this.progressValue = null;
     this.progressMax = null;
-  }
-
-  get progressStyle(): any {
-    if (this.progressValue === null || this.progressMax === null) {
-      return {};
-    }
-    return {
-      '--progress-value': this.progressValue / this.progressMax,
-    };
   }
 }
 </script>
