@@ -3,6 +3,7 @@ import {Progress} from '@/data/service/MangaUpdatesDataService';
 import {Options, Vue} from 'vue-class-component';
 import {ServiceStore} from '@/stores/ServiceStore';
 import {BSpinner} from 'bootstrap-vue-next';
+import {toast} from 'vue3-toastify';
 
 @Options({
   name: 'MangaUpdatesUpdater',
@@ -35,10 +36,7 @@ export default class MangaUpdatesUpdater extends Vue {
   //event handler
   async onUpdateMangaUpdatesDb(): Promise<void> {
     this.progressType = 'starting';
-    try {
-      this.wakeLock = await navigator.wakeLock.request();
-    } catch (_) {
-    }
+    await this.tryAcquireWakeLock();
     this.serviceStore.mangaUpdatesDataService.updateDb(this.progress);
   };
 
@@ -66,6 +64,19 @@ export default class MangaUpdatesUpdater extends Vue {
     this.progressType = null;
     this.progressValue = null;
     this.progressMax = null;
+  }
+
+  //functions
+  private async tryAcquireWakeLock(): Promise<void> {
+    try {
+      if (navigator.wakeLock) {
+        this.wakeLock = await navigator.wakeLock.request('screen');
+      } else {
+        toast.warning(this.$t('wakeLock.permissionDenied'));
+      }
+    } catch (err: any) {
+      toast.warning(this.$t('wakelock.notSupported'));
+    }
   }
 }
 </script>

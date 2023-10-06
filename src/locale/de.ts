@@ -39,6 +39,10 @@ export const messagesDe = {
     title: 'Titel',
   },
   search: 'Suche',
+  wakeLock: {
+    notSupported: 'Wake lock wird nicht unterstützt! Das Gerät könnte Sync-Funktion unterbrechen.',
+    permissionDenied: 'Wake lock ist nicht erlaubt! Das Gerät könnte Sync-Funktion unterbrechen.',
+  },
 };
 
 export const datetimeFormatsDe = {

@@ -40,6 +40,10 @@ export const messagesEn = {
     title: 'Title',
   },
   search: 'Search',
+  wakeLock: {
+    notSupported: 'Wake lock is not supported! The device could pause the sync function.',
+    permissionDenied: 'Wake lock is not allowed! The device could pause the sync function.',
+  },
 };
 
 export const datetimeFormatsEn = {
