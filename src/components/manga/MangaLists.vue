@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import {MangaStore} from '@/stores/MangaStore';
-import MangaList, {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
+import MangaList, {type ViewEntry, type ViewList} from '@/components/manga/MangaList.vue';
 import {BTable} from 'bootstrap-vue-next';
 import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
