@@ -3,7 +3,6 @@ import {Options, Vue} from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
 import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
-import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
 import {latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
@@ -189,7 +188,6 @@ export default class MangaListTable extends Vue {
 @include media-breakpoint-down(sm) {
   .manga-table {
     --manga-cover-size: 3rem;
-    --manga-cover-corner-radius: 0.25rem;
     font-size: 0.8em;
     max-width: 100vw;
     overflow-x: hidden;
@@ -214,7 +212,6 @@ export default class MangaListTable extends Vue {
 @include media-breakpoint-up(sm) {
   .manga-table {
     --manga-cover-size: 4rem;
-    --manga-cover-corner-radius: 0.25rem;
   }
 
   //more horizontal space usage at the start of the row
