@@ -5,6 +5,8 @@ import {BTable, type TableItem} from 'bootstrap-vue-next';
 import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
+import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
+import {latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
 
 type HeadData<I> = {
   label: string,
@@ -25,7 +27,7 @@ type CellData<I, V> = {
 
 @Options({
   name: 'MangaListTable',
-  components: {BTable},
+  components: {BTable, MangaEntryDetailsModal},
 })
 export default class MangaListTable extends Vue {
   @Prop({required: true})
@@ -33,39 +35,46 @@ export default class MangaListTable extends Vue {
 
   bTableRefreshHack = true;
 
+  //methods
+  latestChaptersSorted = latestChaptersSorted;
+  latestChapterString = latestChapterString;
+  newChapterCount = newChapterCount;
+
   get fields(): TableFieldObject<ViewEntry>[] {
     return [{
       key: 'media.coverImage.large',
       label: '',
       sortable: true,
+      tdClass: 'c-pointer',
     }, {
       key: 'media.title.userPreferred',
       label: this.$t('manga.title'),
       sortable: true,
+      tdClass: 'c-pointer',
     }, {
       key: 'entry.score',
       label: this.$t('manga.score'),
       sortable: true,
-      tdClass: 'text-center manga-column-score',
+      tdClass: 'text-center manga-column-score c-pointer',
       thClass: 'text-center manga-column-score',
     }, {
       key: 'entry.progress',
       label: this.$t('manga.progress'),
       sortable: true,
-      tdClass: 'text-end text-nowrap',
+      tdClass: 'text-end text-nowrap c-pointer',
       thClass: 'text-end',
     }, {
       key: 'newChapters',
       formatter: (value: never, key: never, item: ViewEntry) => this.newChapterCount(item),
       label: this.$t('manga.chapters.newCount'),
       sortable: true,
-      tdClass: 'text-end',
+      tdClass: 'text-end c-pointer',
       thClass: 'text-end',
     }, {
       key: 'latestChapters',
       label: this.$t('manga.chapters.latest'),
       sortable: true,
-      tdClass: 'manga-column-latest-chapters',
+      tdClass: 'manga-column-latest-chapters c-pointer',
       thClass: 'manga-column-latest-chapters',
     }];
   }
@@ -74,30 +83,16 @@ export default class MangaListTable extends Vue {
     return this.viewList.entries;
   }
 
-  newChapterCount(entry: ViewEntry): number {
-    const max = entry.media?.chapters || entry.chapters.reduce((l, r) => Math.max(l, r.chapter), 0);
-    return Math.max(0, max - entry.entry.progress);
-  }
-
-  lastestChapterString(entry: ViewEntry): string {
-    if (entry.media?.chapters) {
-      return '' + entry.media.chapters;
-    } else if (entry.chapters.length) {
-      return entry.chapters.reduce((l, r) => Math.max(l, r.chapter), 0) + '+';
-    }
-    return '?';
-  }
-
-  latestChaptersSorted(entry: ViewEntry): MangaUpdatesChapter[] {
-    return entry.chapters.sort((l, r) => l.chapter - r.chapter);
-  }
-
   cd<V = any>(data: V): CellData<ViewEntry, V> {
     return (data as CellData<ViewEntry, V>);
   }
 
   hd<V = any>(data: V): HeadData<V> {
     return (data as HeadData<V>);
+  }
+
+  onRowClicked(entry: TableItem<ViewEntry>): void {
+    (this.$refs.detailsModal as MangaEntryDetailsModal).open(entry);
   }
 
   @Watch('viewList', {deep: true})
@@ -113,54 +108,59 @@ export default class MangaListTable extends Vue {
 </script>
 
 <template>
-  <!--  <div>-->
-  <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntries" :primary-key="'id'"
-          class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc>
-    <template #cell(media.coverImage.large)="data">
-      <img :src="data.value as string" alt="cover-img" class="list-cover"/>
-    </template>
-    <template #cell(media.title.userPreferred)="data">
-      <div class="flex-grow-1">
-        <div>{{ cd(data).item.media?.title.native }}</div>
-        <div>{{ cd(data).item.media?.title.english }}</div>
-      </div>
-      <div v-if="cd(data).item.relation" class="d-flex flex-row" style="font-size: 0.5em">
-        <span>
-          MangaUpdates:&nbsp;
-        </span>
-        <template v-if="cd(data).item.series">
-          <a :href="cd(data).item.series!.url" target="_blank">
-            {{ cd(data).item.series!.title }}
-          </a>
-        </template>
-        <span v-else>{{ $t('mangaupdates.relation.found') }}</span>
-      </div>
-    </template>
-    <template #head(entry.score)="data">
-      <div class="table-header-mobile"><i class="fa fa-star" style="color: var(--bs-orange)"/></div>
-      <div class="table-header-desktop"> {{ hd(data).label }}</div>
-    </template>
-    <template #cell(entry.score)="data">
-      <div class="table-data-mobile">{{ cd(data).value }}</div>
-      <div class="table-data-desktop"><i class="fa fa-star" style="color: var(--bs-orange)"/> {{ cd(data).value }}</div>
-    </template>
-    <template #head(entry.progress)="data">
-      <div class="table-header-mobile"><i class="fa fa-bars-progress"/></div>
-      <div class="table-header-desktop"> {{ hd(data).label }}</div>
-    </template>
-    <template #cell(entry.progress)="data">
-      {{ cd(data).value + '/' + lastestChapterString(cd(data).item) }}
-    </template>
-    <template #head(newChapters)="data">
-      <div class="table-header-mobile"><i class="fa fa-plus" style="color: var(--bs-success)"/></div>
-      <div class="table-header-desktop"> {{ hd(data).label }}</div>
-    </template>
-    <template #cell(latestChapters)="data">
-      <div v-for="c in latestChaptersSorted(cd(data).item)">
-        {{ c.chapter + ' (' + c.group + ')' }}
-      </div>
-    </template>
-  </BTable>
+  <div>
+    <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntries" :primary-key="'id'"
+            class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc
+            @row-clicked="onRowClicked">
+      <template #cell(media.coverImage.large)="data">
+        <img :src="data.value as string" alt="cover-img" class="list-cover"/>
+      </template>
+      <template #cell(media.title.userPreferred)="data">
+        <div class="flex-grow-1">
+          <div>{{ cd(data).item.media?.title.native }}</div>
+          <div>{{ cd(data).item.media?.title.english }}</div>
+        </div>
+        <div v-if="cd(data).item.relation" class="d-flex flex-row" style="font-size: 0.5em">
+          <span>
+            MangaUpdates:&nbsp;
+          </span>
+          <template v-if="cd(data).item.series">
+            <a :href="cd(data).item.series!.url" target="_blank">
+              {{ cd(data).item.series!.title }}
+            </a>
+          </template>
+          <span v-else>{{ $t('mangaupdates.relation.found') }}</span>
+        </div>
+      </template>
+      <template #head(entry.score)="data">
+        <div class="table-header-mobile"><i class="fa fa-star" style="color: var(--bs-orange)"/></div>
+        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+      </template>
+      <template #cell(entry.score)="data">
+        <div class="table-data-mobile">{{ cd(data).value }}</div>
+        <div class="table-data-desktop">
+          <i class="fa fa-star" style="color: var(--bs-orange)"/> {{ cd(data).value }}
+        </div>
+      </template>
+      <template #head(entry.progress)="data">
+        <div class="table-header-mobile"><i class="fa fa-bars-progress"/></div>
+        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+      </template>
+      <template #cell(entry.progress)="data">
+        {{ cd(data).value + '/' + latestChapterString(cd(data).item) }}
+      </template>
+      <template #head(newChapters)="data">
+        <div class="table-header-mobile"><i class="fa fa-plus" style="color: var(--bs-success)"/></div>
+        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+      </template>
+      <template #cell(latestChapters)="data">
+        <div v-for="c in latestChaptersSorted(cd(data).item)">
+          {{ c.chapter + ' (' + c.group + ')' }}
+        </div>
+      </template>
+    </BTable>
+    <MangaEntryDetailsModal ref="detailsModal"/>
+  </div>
 </template>
 
 <style lang="scss">
