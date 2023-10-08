@@ -24,7 +24,7 @@ export const messagesDe = {
   },
   manga: {
     chapters: {
-      newCount: '#Neue Kapitel',
+      newCount: 'Neue Kapitel',
       latest: 'Letzte Kapitel',
     },
     progress: 'Fortschritt',
