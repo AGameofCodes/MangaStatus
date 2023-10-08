@@ -118,7 +118,7 @@ export default class MangaListTable extends Vue {
       <template #cell(media.title.userPreferred)="data">
         <div class="flex-grow-1">
           <div>{{ cd(data).item.media?.title.native }}</div>
-          <div>{{ cd(data).item.media?.title.english }}</div>
+          <div>{{ cd(data).item.media?.title.english ?? cd(data).item.media?.title.romaji }}</div>
         </div>
         <div v-if="cd(data).item.relation" class="d-flex flex-row" style="font-size: 0.5em">
           <span>
