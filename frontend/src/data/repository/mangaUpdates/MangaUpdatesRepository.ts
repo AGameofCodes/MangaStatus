@@ -1,6 +1,5 @@
 import MangaUpdatesDb from '@/data/db/MangaUpdatesDb';
 import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
-import type {MangaUpdatesMedia} from '@/data/models/mangaupdates/MangaUpdatesMedia';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
 
@@ -25,7 +24,7 @@ export default class MangaUpdatesRepository {
 
   async getSeriesById(id: number) {
     return await MangaUpdatesDb.withDb(async db => {
-      return await db.get('series', id);
+      return await db.get('series', IDBKeyRange.only(id));
     });
   }
 
@@ -53,7 +52,7 @@ export default class MangaUpdatesRepository {
     });
   }
 
-  async updateSeries(newSeries: MangaUpdatesMedia[]) {
+  async updateSeries(newSeries: MangaUpdatesSeries[]) {
     return await MangaUpdatesDb.withDb(async db => {
       let txList = db.transaction('series', 'readwrite');
       await Promise.allSettled([

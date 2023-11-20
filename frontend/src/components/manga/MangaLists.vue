@@ -7,6 +7,7 @@ import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
+import groupBy from '@/util';
 
 @Options({
   name: 'MangaLists',
@@ -34,7 +35,7 @@ export default class MangaLists extends Vue {
 
   get chaptersBySeriesId(): Map<number, MangaUpdatesChapter[]> {
     const chapters = this.mangaStore.mangaUpdatesChapters;
-    return Map.groupBy(chapters, e => e.series_id);
+    return groupBy(chapters, e => e.series_id);
   }
 
   get viewLists(): ViewList[] {

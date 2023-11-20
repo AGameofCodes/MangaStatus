@@ -7,6 +7,7 @@ import type {AniListMangaList} from '@/data/models/anilist/AniListMangaList';
 import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
+import groupBy from '@/util';
 
 @Store({
   id: 'MangaStore',
@@ -100,8 +101,8 @@ export class MangaStore extends Pinia {
     await this.dbStore.mangaUpdatesRepository.updateChapters(chapters);
 
     // update cache
-    const cachedById = Map.groupBy(this.cachedMangaUpdatesChapters, c => c.series_id);
-    const chaptersById = Map.groupBy(chapters, c => c.series_id);
+    const cachedById = groupBy(this.cachedMangaUpdatesChapters, c => c.series_id);
+    const chaptersById = groupBy(chapters, c => c.series_id);
     chaptersById.forEach((v, k) => cachedById.set(k, v));
     this.cachedMangaUpdatesChapters.splice(0);
     this.cachedMangaUpdatesChapters.push(...Array.from(cachedById.values()).flat());

@@ -14,7 +14,7 @@ export default class AniListApi {
         'variables': {'name': userName},
       }),
     });
-    return (await handleJsonResponse(res)).data.User;
+    return ((await handleJsonResponse(res)) as any).data.User;
   }
 
   async fetchManga(userId: number): Promise<AniListMangaListCollection> {
@@ -28,6 +28,6 @@ export default class AniListApi {
         'variables': {'userId': userId, 'type': 'MANGA'},
       }),
     });
-    return (await handleJsonResponse(res)).data.MediaListCollection;
+    return ((await handleJsonResponse(res)) as any).data.MediaListCollection;
   }
 }

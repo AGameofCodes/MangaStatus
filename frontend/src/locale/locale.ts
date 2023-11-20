@@ -25,6 +25,7 @@ export function createI18n(): I18n {
     locale: browserLocale,
     fallbackLocale: 'en',
     messages: messages,
+    //@ts-ignore TS2769 TODO weird typing issue
     datetimeFormats: datetimeFormats,
     legacy: true,
   });

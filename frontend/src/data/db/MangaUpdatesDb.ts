@@ -1,6 +1,7 @@
 import {type IDBPDatabase, openDB} from 'idb';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
+import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
 
 export type MuDb = IDBPDatabase<MangaUpdatesDBSchema>;
 

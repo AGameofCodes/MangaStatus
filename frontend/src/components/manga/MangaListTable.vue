@@ -2,6 +2,7 @@
 import {Options, Vue} from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
+//@ts-ignore TS2307
 import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
@@ -110,7 +111,7 @@ export default class MangaListTable extends Vue {
   <div>
     <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntries" :primary-key="'id'"
             class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc
-            @row-clicked="onRowClicked">
+            @row-clicked="onRowClicked as any /* TODO dumb typing issue */">
       <template #cell(media.coverImage.large)="data">
         <img :src="data.value as string" alt="cover-img" class="list-cover"/>
       </template>

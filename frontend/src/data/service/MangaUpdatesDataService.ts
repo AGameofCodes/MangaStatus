@@ -5,6 +5,7 @@ import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesC
 import type {MangaUpdatesSearchResultRecord} from '@/data/models/mangaupdates/MangaUpdatesSearchResultRecord';
 import stringSimilarity from 'string-similarity-js';
 import {ApiError} from '@/data/api/ApiUtils';
+import groupBy from '@/util';
 
 export default class MangaUpdatesDataService {
   private readonly mangaUpdatesApi = new MangaUpdatesApi();
@@ -63,7 +64,8 @@ export default class MangaUpdatesDataService {
           matching = results.results
             .filter(e => stringSimilarity(title, e.record.title, 2, false) >= 0.95)
             .filter(e => allowTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
-            .filter(e => m.startDate.year - 1 <= e.record.year && e.record.year <= m.startDate.year + 1); //check year +-1
+            .filter(e => m.startDate.year - 1 <= parseInt('' + e.record.year)
+              && parseInt('' + e.record.year) <= m.startDate.year + 1); //check year +-1
           if (matching.length === 0) {
             continue;
           }
@@ -148,7 +150,7 @@ export default class MangaUpdatesDataService {
           .flat();
 
         //only keep chapter with the highest chapter number per group
-        const filtered = Array.from(Map.groupBy(updates, c => c.group).values())
+        const filtered = Array.from(groupBy(updates, c => c.group).values())
           .map(chaptersOfGroup => chaptersOfGroup.reduce((l, r) => l.chapter > r.chapter ? l : r, chaptersOfGroup[0]));
         await mangaStore.updateMangaUpdatesChapters(filtered);
       } finally {
