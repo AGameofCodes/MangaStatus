@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 
 mkdir dist
-rm -rf dist/*
+(cd dist && (ls | grep -v "cache" | grep -v "config.json" | xargs echo "rm -rf"))
 
 # build
 (cd backend && npm i && npm run build) || exit 1
@@ -11,7 +11,7 @@ rm -rf dist/*
 # copy backend
 cp -r backend/dist/* dist
 cp -r backend/node_modules dist
-cp backend/config.json dist
+cp -n backend/config.json dist
 
 # copy front end
 mkdir dist/_client
