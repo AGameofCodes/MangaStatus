@@ -6,7 +6,7 @@ mkdir dist
 
 # build
 (cd backend && npm i && npm run build) || exit 1
-(cd frontend && npm i && npm run build-only) || exit 1
+(cd frontend && npm i && npm run build) || exit 1
 
 # copy backend
 cp -r backend/dist/* dist
