@@ -58,8 +58,6 @@ export default class MangaUpdatesDataService {
               console.error(err);
             }
             continue;
-          } finally {
-            // await new Promise((r) => setTimeout(r, 1000));
           }
           matching = results.results
             .filter(e => stringSimilarity(title, e.record.title, 2, false) >= 0.95)
@@ -103,8 +101,6 @@ export default class MangaUpdatesDataService {
             console.error(err);
           }
           continue;
-        } finally {
-          //   await new Promise((r) => setTimeout(r, 1000));
         }
         await mangaStore.updateMangaUpdatesSeries([series]);
       } finally {
@@ -119,11 +115,6 @@ export default class MangaUpdatesDataService {
     let i = 0;
     for (const s of series) {
       try {
-        // const dbSeries = await dbStore.mangaUpdatesRepository.getSeriesById(s.series_id);
-        // if (dbSeries) { // TODO check for now - lastUpdated < 1d or sth
-        //   continue;
-        // }
-
         let groups;
         try {
           groups = await this.mangaUpdatesApi.groups(s.series_id);
@@ -134,8 +125,6 @@ export default class MangaUpdatesDataService {
             console.error(err);
           }
           continue;
-        } finally {
-          // await new Promise((r) => setTimeout(r, 1000));
         }
 
         const updates = groups.release_list
