@@ -1,7 +1,9 @@
 {
-  "name": "mangastatus",
-  "version": "0.0.0",
+  "name": "mangastatus-frontend",
+  "version": "1.0.0",
   "private": true,
+  "author": "wea_ondara",
+  "license": "ISC",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",

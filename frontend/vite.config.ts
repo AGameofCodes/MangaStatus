@@ -23,25 +23,14 @@ export default defineConfig({
   },
   clearScreen: false,
   server: {
-    proxy: {
-      '/graphql': {
-        target: 'https://graphql.anilist.co',
+    proxy: {//for dev
+      '^/anilist/.*$': {
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        configure: (proxy, options) => {
-          proxy.on('proxyRes', proxyRes => {
-            delete proxyRes.headers['set-cookie'];
-          });
-        },
       },
       '^/mangaupdates/.*$': {
-        target: 'https://api.mangaupdates.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/mangaupdates/, ''),
-        configure: (proxy, options) => {
-          proxy.on('proxyRes', proxyRes => {
-            delete proxyRes.headers['set-cookie'];
-          });
-        },
       },
     },
   },

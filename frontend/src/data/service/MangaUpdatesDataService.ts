@@ -58,7 +58,7 @@ export default class MangaUpdatesDataService {
             }
             continue;
           } finally {
-            await new Promise((r) => setTimeout(r, 1000));
+            // await new Promise((r) => setTimeout(r, 1000));
           }
           matching = results.results
             .filter(e => stringSimilarity(title, e.record.title, 2, false) >= 0.95)

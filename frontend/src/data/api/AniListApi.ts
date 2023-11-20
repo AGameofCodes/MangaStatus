@@ -4,7 +4,7 @@ import type {AniListMangaListCollection} from '@/data/models/anilist/AniListMang
 
 export default class AniListApi {
   async fetchUser(userName: string): Promise<AniListUser> {
-    const res = fetch('/graphql', {
+    const res = fetch('/anilist/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ export default class AniListApi {
   }
 
   async fetchManga(userId: number): Promise<AniListMangaListCollection> {
-    const res = fetch('/graphql', {
+    const res = fetch('/anilist/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
