@@ -19,7 +19,7 @@ export class MangaStore extends Pinia {
   private cachedAniListManga = new Map<string, AniListMangaListEntry[]>();
   private cachedAniListMedia: AniListMedia[] = [];
   private cachedAniListUser: AniListUser | null = null;
-  private cachedMangaUpdatesChapters: MangaUpdatesChapter[] = [];
+  private cachedMangaUpdatesChaptersBySeriesId: Map<number, MangaUpdatesChapter[]> = new Map();
   private cachedMangaUpdatesSeries: MangaUpdatesSeries[] = [];
   private cachedMangaUpdatesRelations: MangaUpdatesRelation[] = [];
   private cachedUserName: string | null = null;
@@ -46,8 +46,8 @@ export class MangaStore extends Pinia {
     return this.cachedAniListUser;
   }
 
-  get mangaUpdatesChapters(): MangaUpdatesChapter[] {
-    return this.cachedMangaUpdatesChapters;
+  get mangaUpdatesChapters(): Map<number, MangaUpdatesChapter[]> {
+    return this.cachedMangaUpdatesChaptersBySeriesId;
   }
 
   get mangaUpdatesRelations(): MangaUpdatesRelation[] {
@@ -101,11 +101,8 @@ export class MangaStore extends Pinia {
     await this.dbStore.mangaUpdatesRepository.updateChapters(chapters);
 
     // update cache
-    const cachedById = groupBy(this.cachedMangaUpdatesChapters, c => c.series_id);
-    const chaptersById = groupBy(chapters, c => c.series_id);
-    chaptersById.forEach((v, k) => cachedById.set(k, v));
-    this.cachedMangaUpdatesChapters.splice(0);
-    this.cachedMangaUpdatesChapters.push(...Array.from(cachedById.values()).flat());
+    const chaptersBySeriesId = groupBy(chapters, c => c.series_id);
+    chaptersBySeriesId.forEach((v, k) => this.cachedMangaUpdatesChaptersBySeriesId.set(k, v));
   }
 
   async updateMangaUpdatesSeries(media: MangaUpdatesSeries[]): Promise<void> {
@@ -138,7 +135,7 @@ export class MangaStore extends Pinia {
     this.cachedAniListLists.splice(0);
     this.cachedAniListMedia.splice(0);
     this.cachedAniListUser = null;
-    this.cachedMangaUpdatesChapters.splice(0);
+    this.cachedMangaUpdatesChaptersBySeriesId.clear();
     this.cachedMangaUpdatesSeries.splice(0);
     this.cachedMangaUpdatesRelations.splice(0);
   }
@@ -156,7 +153,8 @@ export class MangaStore extends Pinia {
       }
     }
 
-    this.cachedMangaUpdatesChapters.push(...await this.dbStore.mangaUpdatesRepository.getChapters());
+    const chapters = groupBy(await this.dbStore.mangaUpdatesRepository.getChapters(), e => e.series_id);
+    chapters.forEach((seriesChapters, seriesId) => this.cachedMangaUpdatesChaptersBySeriesId.set(seriesId, seriesChapters));
     this.cachedMangaUpdatesSeries.push(...await this.dbStore.mangaUpdatesRepository.getSeries());
     this.cachedMangaUpdatesRelations.push(...await this.dbStore.mangaUpdatesRepository.getRelations());
   }

@@ -34,8 +34,7 @@ export default class MangaLists extends Vue {
   }
 
   get chaptersBySeriesId(): Map<number, MangaUpdatesChapter[]> {
-    const chapters = this.mangaStore.mangaUpdatesChapters;
-    return groupBy(chapters, e => e.series_id);
+    return this.mangaStore.mangaUpdatesChapters;
   }
 
   get viewLists(): ViewList[] {
