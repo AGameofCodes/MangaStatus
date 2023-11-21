@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 
 mkdir dist
-(cd dist && (ls | grep -v "cache" | grep -v "config.json" | xargs echo "rm -rf"))
+(cd dist && (ls | grep -v "cache" | grep -v "config.json" | xargs rm -r))
 
 # build
 (cd backend && npm i && npm run build) || exit 1
