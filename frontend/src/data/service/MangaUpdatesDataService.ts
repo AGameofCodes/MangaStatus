@@ -137,7 +137,7 @@ export default class MangaUpdatesDataService {
             const chapter = parseInt(match[1]);
             return r.groups.map(g => ({series_id: s.series_id, group: g.name, chapter: chapter} as MangaUpdatesChapter));
           })
-          .flat();
+          .flat() as MangaUpdatesChapter[];
 
         //only keep chapter with the highest chapter number per group
         const filtered = Array.from(groupBy(updates, c => c.group).values())

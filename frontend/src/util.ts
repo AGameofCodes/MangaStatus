@@ -1,4 +1,4 @@
-export default function groupBy<K, V>(arr: V[], fn: (v: V) => K): Map<K, V[]> {
+export default function groupBy<K, V>(arr: V[], fn: (value: V) => K): Map<K, V[]> {
   const map = new Map<K, V[]>();
   arr.forEach(e => {
     const key = fn(e);
