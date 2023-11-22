@@ -113,6 +113,7 @@ export default class MangaUpdatesDataService {
     const series = await dbStore.mangaUpdatesRepository.getSeries();
 
     let i = 0;
+    const cachedChapterUpdates: MangaUpdatesChapter[] = []
     for (const s of series) {
       try {
         let groups;
@@ -141,11 +142,12 @@ export default class MangaUpdatesDataService {
         //only keep chapter with the highest chapter number per group
         const filtered = Array.from(groupBy(updates, c => c.group).values())
           .map(chaptersOfGroup => chaptersOfGroup.reduce((l, r) => l.chapter > r.chapter ? l : r, chaptersOfGroup[0]));
-        await mangaStore.updateMangaUpdatesChapters(filtered);
+        cachedChapterUpdates.push(...filtered)
       } finally {
         await progress.onProgress('chapters', ++i, series.length);
       }
     }
+    await mangaStore.updateMangaUpdatesChapters(cachedChapterUpdates);
   }
 }
 
