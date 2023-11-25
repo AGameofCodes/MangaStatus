@@ -6,7 +6,7 @@ mkdir dist/cache
 
 # clean
 (cd dist && (ls | grep -v "cache" | grep -v "config.json" | xargs rm -r))
-(cd dist/cache && (ls | grep -v ".json" | xargs rm -r))
+(cd dist/cache && (ls | grep -v ".json" | grep -v "mangadex" | grep -v "mangaupdates" | xargs rm -r))
 
 # build
 (cd backend && npm i && npm run build) || exit 1
