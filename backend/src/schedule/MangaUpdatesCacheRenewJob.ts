@@ -1,13 +1,13 @@
 import IJob from './IJob';
-import MangaUpdateCacheRenewService from '../service/MangaUpdateCacheRenewService.js';
+import MangaUpdatesCacheRenewService from '../service/MangaUpdatesCacheRenewService';
 import {MangaUpdatesCache} from '../cache/MangaUpdatesCache.js';
 
-export default class MangaUpdateCacheRenewJob implements IJob<void> {
-  private readonly service: MangaUpdateCacheRenewService;
+export default class MangaUpdatesCacheRenewJob implements IJob<void> {
+  private readonly service: MangaUpdatesCacheRenewService;
   private lock: boolean = false;
 
   constructor(cache: MangaUpdatesCache) {
-    this.service = new MangaUpdateCacheRenewService(cache);
+    this.service = new MangaUpdatesCacheRenewService(cache);
   }
 
   get schedule(): Date | string {

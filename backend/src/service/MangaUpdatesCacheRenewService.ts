@@ -1,6 +1,6 @@
 import {MangaUpdatesCache} from '../cache/MangaUpdatesCache';
 
-export default class MangaUpdateCacheRenewService {
+export default class MangaUpdatesCacheRenewService {
   private static readonly delay = 3000;
 
   private readonly cache: MangaUpdatesCache;
@@ -22,7 +22,7 @@ export default class MangaUpdateCacheRenewService {
     console.log(titles.length + ' out-of-date relations');
 
     for (let title of titles) {
-      await new Promise((r) => setTimeout(r, MangaUpdateCacheRenewService.delay));
+      await new Promise((r) => setTimeout(r, MangaUpdatesCacheRenewService.delay));
       try {
         const fromApi = await fetch('https://api.mangaupdates.com/v1/series/search', {
           method: 'POST',
@@ -49,7 +49,7 @@ export default class MangaUpdateCacheRenewService {
     console.log(ids.length + ' out-of-date series');
 
     for (let id of ids) {
-      await new Promise((r) => setTimeout(r, MangaUpdateCacheRenewService.delay));
+      await new Promise((r) => setTimeout(r, MangaUpdatesCacheRenewService.delay));
       try {
         const fromApi = await fetch('https://api.mangaupdates.com/v1/series/' + id);
         if (fromApi.status !== 200) {
@@ -69,7 +69,7 @@ export default class MangaUpdateCacheRenewService {
     console.log(ids.length + ' out-of-date series updates');
 
     for (let id of ids) {
-      await new Promise((r) => setTimeout(r, MangaUpdateCacheRenewService.delay));
+      await new Promise((r) => setTimeout(r, MangaUpdatesCacheRenewService.delay));
       try {
         const fromApi = await fetch('https://api.mangaupdates.com/v1/series/' + id + '/groups');
         if (fromApi.status !== 200) {
