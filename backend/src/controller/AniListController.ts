@@ -13,9 +13,9 @@ export default class AniListController {
 
       const fromApiText = await fromApi.text();
       res.status(fromApi.status).send(fromApiText);
+      next();
     } catch (e) {
-      console.error(e);
+      next(e);
     }
-    next();
   }
 }
