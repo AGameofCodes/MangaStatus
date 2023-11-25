@@ -7,6 +7,7 @@ import {MangaUpdatesCache} from './cache/MangaUpdatesCache.js';
 import * as fs from 'fs';
 import {MangaDexCache} from './cache/MangaDexCache';
 import mangaDexRouter from './router/MangaDexRouter';
+import catchAllRedirect from './CatchAllRedirect';
 import exceptionHandler from './ExceptionHandler';
 
 const config = JSON.parse(fs.readFileSync('config.json').toString());
@@ -27,6 +28,7 @@ app.use('/anilist', aniListRouter());
 app.use('/mangadex', mangaDexRouter(mangaDexCache));
 app.use('/mangaupdates', mangaUpdatesRouter(mangaUpdatesCache));
 app.use(express.static('_client')); //for production
+app.use(catchAllRedirect(app, '/'));
 app.use(exceptionHandler());
 
 //start
