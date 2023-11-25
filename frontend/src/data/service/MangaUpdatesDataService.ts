@@ -16,17 +16,11 @@ export default class MangaUpdatesDataService {
     const mangaStore = new MangaStore();
     const dbStore = new DbStore();
     return this.findMissingRelations(mangaStore, dbStore, progress)
-      .catch(err => {
-        console.error(err);
-      })
+      .catch(err => console.error(err))
       .then(_ => this.fetchSeriesUpdates(mangaStore, dbStore, progress))
-      .catch(err => {
-        console.error(err);
-      })
+      .catch(err => console.error(err))
       .then(_ => this.fetchSeriesChapterUpdates(mangaStore, dbStore, progress))
-      .catch(err => {
-        console.error(err);
-      })
+      .catch(err => console.error(err))
       .then(_ => progress.onFinished());
   }
 
@@ -73,6 +67,7 @@ export default class MangaUpdatesDataService {
           }
           break;
         }
+
         if (matching.length === 0) {
           continue;
         }
@@ -117,7 +112,7 @@ export default class MangaUpdatesDataService {
     const series = await dbStore.mangaUpdatesRepository.getSeries();
 
     let i = 0;
-    const cachedChapterUpdates: MangaUpdatesChapter[] = []
+    const cachedChapterUpdates: MangaUpdatesChapter[] = [];
     for (const s of series) {
       try {
         let groups;
@@ -146,7 +141,7 @@ export default class MangaUpdatesDataService {
         //only keep chapter with the highest chapter number per group
         const filtered = Array.from(groupBy(updates, c => c.group).values())
           .map(chaptersOfGroup => chaptersOfGroup.reduce((l, r) => l.chapter > r.chapter ? l : r, chaptersOfGroup[0]));
-        cachedChapterUpdates.push(...filtered)
+        cachedChapterUpdates.push(...filtered);
       } finally {
         await progress.onProgress('mangaUpdates.chapters', ++i, series.length);
       }

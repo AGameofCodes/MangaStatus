@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import {MangaDexCache} from './cache/MangaDexCache';
 import mangaDexRouter from './router/MangaDexRouter';
 
-const config = JSON.parse(fs.readFileSync('config.json').toString())
+const config = JSON.parse(fs.readFileSync('config.json').toString());
 
 const app = express();
 const mangaDexCache = new MangaDexCache();
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use('/anilist', aniListRouter());
 app.use('/mangadex', mangaDexRouter(mangaDexCache));
 app.use('/mangaupdates', mangaUpdatesRouter(mangaUpdatesCache));
-app.use(express.static('_client')) //for production
+app.use(express.static('_client')); //for production
 
 //start
 app.listen(config.port, config.host, () => {

@@ -78,11 +78,13 @@ export class MangaUpdatesCache {
       .filter(([title, entry]) => entry.lastUpdateMs + this.MAX_CACHE_AGE_SEARCH_BY_TITLE < Date.now())
       .map(([title, entry]) => title);
   }
+
   getOutOfDateSeries(): string[] {
     return Array.from(this._seriesById.entries())
       .filter(([title, entry]) => entry.lastUpdateMs + this.MAX_CACHE_AGE_SERIES_BY_ID < Date.now())
       .map(([title, entry]) => title);
   }
+
   getOutOfDateSeriesGroups(): string[] {
     return Array.from(this._seriesGroupsById.entries())
       .filter(([title, entry]) => entry.lastUpdateMs + this.MAX_CACHE_AGE_SERIES_GROUPS_BY_ID < Date.now())
