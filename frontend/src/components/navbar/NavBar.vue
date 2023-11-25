@@ -34,10 +34,10 @@ export default class NavBar extends Vue {
       <div class="navbar-nav flex-row">
         <Logo class="navbar-logo"/>
         <div class="nav-item">
-          <RouterLink class="nav-link active" aria-current="page" to="/">List</RouterLink>
+          <RouterLink class="nav-link" aria-current="page" to="/" active-class="active">List</RouterLink>
         </div>
         <div class="nav-item">
-          <RouterLink class="nav-link active" aria-current="page" to="/about">About</RouterLink>
+          <RouterLink class="nav-link" aria-current="page" to="/about" active-class="active">About</RouterLink>
         </div>
       </div>
     </div>
