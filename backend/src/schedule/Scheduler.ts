@@ -2,13 +2,16 @@ import {MangaUpdatesCache} from '../cache/MangaUpdatesCache.js';
 import IJob from './IJob.js';
 import MangaUpdateCacheRenewJob from './MangaUpdateCacheRenewJob.js';
 import {gracefulShutdown, scheduleJob} from 'node-schedule';
+import {MangaDexCache} from '../cache/MangaDexCache';
+import MangaDexCacheRenewJob from './MangaDexCacheRenewJob';
 
 export default class Scheduler {
   private readonly jobs: IJob<any>[] = [];
 
-  constructor(cache: MangaUpdatesCache) {
+  constructor(mangaDexCache: MangaDexCache, mangaUpdatesCache: MangaUpdatesCache) {
     this.jobs.push(
-      new MangaUpdateCacheRenewJob(cache),
+      new MangaDexCacheRenewJob(mangaDexCache),
+      new MangaUpdateCacheRenewJob(mangaUpdatesCache),
     );
   }
 

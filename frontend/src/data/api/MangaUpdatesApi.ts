@@ -3,6 +3,9 @@ import {handleJsonResponse} from '@/data/api/ApiUtils';
 import type {MangaUpdatesSearchResult} from '@/data/models/mangaupdates/MangaUpdatesSearchResult';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
 import type {MangaUpdatesSeriesGroups} from '@/data/models/mangaupdates/MangaUpdatesSeriesGroups';
+import type {
+  MangaUpdatesWebsiteIdSeriesIdRelation
+} from '@/data/models/mangaupdates/MangaUpdatesWebsiteIdSeriesIdRelation';
 
 export default class MangaUpdatesApi {
   search(name: string): Promise<MangaUpdatesSearchResult> {
@@ -25,6 +28,11 @@ export default class MangaUpdatesApi {
 
   groups(id: number): Promise<MangaUpdatesSeriesGroups> {
     const res = fetch(`/mangaupdates/v1/series/${id}/groups`);
+    return handleJsonResponse(res);
+  }
+
+  seriesIdByWebsiteId(websiteId: number): Promise<MangaUpdatesWebsiteIdSeriesIdRelation> {
+    const res = fetch('/mangaupdates/series_id_from_website_id/' + websiteId);
     return handleJsonResponse(res);
   }
 }

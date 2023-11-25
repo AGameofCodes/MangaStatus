@@ -6,12 +6,17 @@ export const messagesDe = {
   },
   design: 'Design',
   fetch: {
+    general: {
+      finished: 'Fertig',
+      starting: 'Starte',
+    },
+    mangaDex: {
+      relations: 'Relationen',
+    },
     mangaUpdates: {
       chapters: 'Kapitel',
-      finished: 'Fertig',
       relations: 'Relationen',
       series: 'Kapitel',
-      starting: 'Starte',
     },
   },
   locale: 'Sprache',

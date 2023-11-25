@@ -103,4 +103,50 @@ export class MangaUpdatesController {
     res.status(200).setHeader('Content-Type', 'application/json').send(fromApiJson);
     next();
   }
+
+  async getSeriesIdFromWebsiteId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = req.params.websiteId;
+      if (!id || !id.trim().length || !id.match(/^[0-9a-zA-Z]+$/)) {
+        res.status(400).send('Website id required!');
+        next();
+        return;
+      }
+
+      const fromCache = this.cache.getSeriesIdByWebsiteId(id);
+      if (fromCache) {
+        res.status(200).send(fromCache);
+        next();
+        return;
+      }
+
+      //throttle
+      await new Promise((r) => setTimeout(r, 1000));
+
+      //fetch from manga updates
+      const fromApi = await fetch(id.match(/^[0-9]+$/)
+        ? 'https://www.mangaupdates.com/series.html?id=' + id
+        : 'https://www.mangaupdates.com/series/' + id);
+      if (fromApi.status !== 200) {
+        res.status(fromApi.status).send(fromApi.body);
+        next();
+        return;
+      }
+
+      const fromApiHtml = await fromApi.text();
+      const match = fromApiHtml.match(/https:\/\/api.mangaupdates.com\/v1\/series\/([0-9]+)\/rss/);
+      if (!match) {
+        res.status(404).send('Series id not found in website!');
+        next();
+        return;
+      }
+      const json = JSON.stringify({website_id: id, series_id: parseInt(match[1]!)});
+      this.cache.putSeriesIdByWebsiteId(id, json);
+
+      res.status(200).send(json);
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
 }

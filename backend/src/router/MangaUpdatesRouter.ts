@@ -8,5 +8,6 @@ export default function mangaUpdatesRouter(cache: MangaUpdatesCache): Router {
   router.post('/v1/series/search', controller.search.bind(controller));
   router.get('/v1/series/:id', controller.getById.bind(controller));
   router.get('/v1/series/:id/groups', controller.getGroupById.bind(controller));
+  router.get('/series_id_from_website_id/:websiteId', controller.getSeriesIdFromWebsiteId.bind(controller));
   return router;
 }

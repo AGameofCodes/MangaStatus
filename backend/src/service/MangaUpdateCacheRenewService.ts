@@ -10,11 +10,11 @@ export default class MangaUpdateCacheRenewService {
   }
 
   async renew(): Promise<void> {
-    console.log('Renewing cache ...');
+    console.log('Renewing MangaUpdates cache ...');
     await this.renewRelations();
     await this.renewSeries();
     await this.renewUpdates();
-    console.log('Renewing cache done');
+    console.log('Renewing MangaUpdates cache done');
   }
 
   async renewRelations(): Promise<void> {

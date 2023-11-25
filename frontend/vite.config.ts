@@ -28,6 +28,10 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
+      '^/mangadex/.*$': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
       '^/mangaupdates/.*$': {
         target: 'http://localhost:5000',
         changeOrigin: true,

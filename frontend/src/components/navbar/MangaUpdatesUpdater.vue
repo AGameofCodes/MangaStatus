@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Progress} from '@/data/service/MangaUpdatesDataService';
+import {Progress} from '@/data/service/Progress';
 import {Options, Vue} from 'vue-class-component';
 import {ServiceStore} from '@/stores/ServiceStore';
 import {BSpinner} from 'bootstrap-vue-next';
@@ -13,7 +13,8 @@ import {toast} from 'vue3-toastify';
 })
 export default class MangaUpdatesUpdater extends Vue {
   //vars
-  progress: Progress = new Progress(this.onProgress.bind(this), this.onFinished.bind(this));
+  progressMangaDex: Progress = new Progress(this.onProgress.bind(this), () => {});
+  progressMangaUpdates: Progress = new Progress(this.onProgress.bind(this), this.onFinished.bind(this));
   progressType: string | null = null;
   progressValue: number | null = null;
   progressMax: number | null = null;
@@ -35,9 +36,10 @@ export default class MangaUpdatesUpdater extends Vue {
 
   //event handler
   async onUpdateMangaUpdatesDb(): Promise<void> {
-    this.progressType = 'starting';
+    this.progressType = 'general.starting';
     await this.tryAcquireWakeLock();
-    this.serviceStore.mangaUpdatesDataService.updateDb(this.progress);
+    await this.serviceStore.mangaDexDataService.updateDb(this.progressMangaDex);
+    await this.serviceStore.mangaUpdatesDataService.updateDb(this.progressMangaUpdates);
   };
 
   onProgress(type: string, progress: number, max: number): void {
@@ -50,7 +52,7 @@ export default class MangaUpdatesUpdater extends Vue {
     this.wakeLock?.release();
     this.wakeLock = null;
 
-    this.progressType = 'finished';
+    this.progressType = 'general.finished';
     this.progressValue = null;
     this.progressMax = null;
 
@@ -89,10 +91,10 @@ export default class MangaUpdatesUpdater extends Vue {
       <span class="text-nowrap">
         <BSpinner small class="me-2"/>
         <template v-if="progressValue === null || progressMax === null">
-          {{ $t('fetch.mangaUpdates.' + progressType) }}
+          {{ $t('fetch.' + progressType) }}
         </template>
         <template v-else>
-          {{ $t('fetch.mangaUpdates.' + progressType) + ': ' + (progressValue ?? 0) + '/' + (progressMax ?? 1) }}
+          {{ $t('fetch.' + progressType) + ': ' + (progressValue ?? 0) + '/' + (progressMax ?? 1) }}
         </template>
       </span>
     </template>

@@ -7,14 +7,15 @@ import stringSimilarity from 'string-similarity-js';
 import {ApiError} from '@/data/api/ApiUtils';
 import groupBy from '@/util';
 import {decode} from 'html-entities';
+import {Progress} from '@/data/service/Progress';
 
 export default class MangaUpdatesDataService {
   private readonly mangaUpdatesApi = new MangaUpdatesApi();
 
-  updateDb(progress: Progress): Progress {
+  updateDb(progress: Progress): Promise<void> {
     const mangaStore = new MangaStore();
     const dbStore = new DbStore();
-    this.findMissingRelations(mangaStore, dbStore, progress)
+    return this.findMissingRelations(mangaStore, dbStore, progress)
       .catch(err => {
         console.error(err);
       })
@@ -27,7 +28,6 @@ export default class MangaUpdatesDataService {
         console.error(err);
       })
       .then(_ => progress.onFinished());
-    return progress;
   }
 
   private async findMissingRelations(mangaStore: MangaStore, dbStore: DbStore, progress: Progress): Promise<void> {
@@ -79,7 +79,7 @@ export default class MangaUpdatesDataService {
 
         await mangaStore.addMangaUpdatesRelations([{aniListMediaId: m.id, mangaUpdatesSeriesId: matching[0].record.series_id}]);
       } finally {
-        await progress.onProgress('relations', ++i, media.length);
+        await progress.onProgress('mangaUpdates.relations', ++i, media.length);
       }
     }
   }
@@ -108,7 +108,7 @@ export default class MangaUpdatesDataService {
         }
         await mangaStore.updateMangaUpdatesSeries([series]);
       } finally {
-        await progress.onProgress('series', ++i, relations.length);
+        await progress.onProgress('mangaUpdates.series', ++i, relations.length);
       }
     }
   }
@@ -148,30 +148,10 @@ export default class MangaUpdatesDataService {
           .map(chaptersOfGroup => chaptersOfGroup.reduce((l, r) => l.chapter > r.chapter ? l : r, chaptersOfGroup[0]));
         cachedChapterUpdates.push(...filtered)
       } finally {
-        await progress.onProgress('chapters', ++i, series.length);
+        await progress.onProgress('mangaUpdates.chapters', ++i, series.length);
       }
     }
     await mangaStore.updateMangaUpdatesChapters(cachedChapterUpdates);
   }
 }
 
-export type ProgressCallBackFn = (type: string, progress: number, max: number) => (Promise<void> | void);
-export type FinishCallBackFn = () => (Promise<void> | void);
-
-export class Progress {
-  readonly progress: ProgressCallBackFn;
-  readonly finish: FinishCallBackFn;
-
-  constructor(onProgress: ProgressCallBackFn, onFinish: FinishCallBackFn) {
-    this.progress = onProgress;
-    this.finish = onFinish;
-  }
-
-  async onProgress(type: string, progress: number, max: number): Promise<void> {
-    return (this.progress ? this.progress(type, progress, max) : Promise.resolve());
-  }
-
-  async onFinished(): Promise<void> {
-    return (this.finish ? this.finish() : Promise.resolve());
-  }
-}

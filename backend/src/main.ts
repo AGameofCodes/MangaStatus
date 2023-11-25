@@ -5,12 +5,15 @@ import mangaUpdatesRouter from './router/MangaUpdatesRouter.js';
 import Scheduler from './schedule/Scheduler.js';
 import {MangaUpdatesCache} from './cache/MangaUpdatesCache.js';
 import * as fs from 'fs';
+import {MangaDexCache} from './cache/MangaDexCache';
+import mangaDexRouter from './router/MangaDexRouter';
 
 const config = JSON.parse(fs.readFileSync('config.json').toString())
 
 const app = express();
+const mangaDexCache = new MangaDexCache();
 const mangaUpdatesCache = new MangaUpdatesCache();
-const scheduler = new Scheduler(mangaUpdatesCache);
+const scheduler = new Scheduler(mangaDexCache, mangaUpdatesCache);
 
 scheduler.registerJobs();
 
@@ -20,6 +23,7 @@ app.use(express.json());
 
 //router
 app.use('/anilist', aniListRouter());
+app.use('/mangadex', mangaDexRouter(mangaDexCache));
 app.use('/mangaupdates', mangaUpdatesRouter(mangaUpdatesCache));
 app.use(express.static('_client')) //for production
 
