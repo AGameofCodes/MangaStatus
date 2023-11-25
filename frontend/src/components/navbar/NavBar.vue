@@ -4,6 +4,7 @@ import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThe
 import AniListUserSearch from '@/components/navbar/AniListUserSearch.vue';
 import MangaUpdatesUpdater from '@/components/navbar/MangaUpdatesUpdater.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
+import Logo from '@/components/Logo.vue';
 
 @Options({
   name: 'NavBar',
@@ -11,6 +12,7 @@ import LocaleSelector from '@/components/locale/LocaleSelector.vue';
     AniListUserSearch,
     BootstrapThemeSwitch,
     LocaleSelector,
+    Logo,
     MangaUpdatesUpdater,
   },
   emits: {
@@ -30,6 +32,7 @@ export default class NavBar extends Vue {
         <i class="fa fa-bars me-2" @click="$emit('toggleSidebar')"/>
       </div>
       <div class="navbar-nav flex-row">
+        <Logo class="navbar-logo"/>
         <div class="nav-item">
           <RouterLink class="nav-link active" aria-current="page" to="/">List</RouterLink>
         </div>
@@ -58,6 +61,7 @@ export default class NavBar extends Vue {
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins/breakpoints';
 
+nav.navbar .navbar-logo,
 nav.navbar .nav-item {
   margin-inline-end: 1rem;
 }
