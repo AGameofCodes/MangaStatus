@@ -6,6 +6,7 @@ import type {MangaUpdatesSearchResultRecord} from '@/data/models/mangaupdates/Ma
 import stringSimilarity from 'string-similarity-js';
 import {ApiError} from '@/data/api/ApiUtils';
 import groupBy from '@/util';
+import {decode} from 'html-entities';
 
 export default class MangaUpdatesDataService {
   private readonly mangaUpdatesApi = new MangaUpdatesApi();
@@ -59,8 +60,11 @@ export default class MangaUpdatesDataService {
             }
             continue;
           }
+          const cleaner = (str: string) => {
+            return str.toLowerCase().replaceAll('"', '\'').replaceAll(' - ', ' ').replaceAll(': ', ' ');
+          };
           matching = results.results
-            .filter(e => stringSimilarity(title, e.record.title, 2, false) >= 0.95)
+            .filter(e => stringSimilarity(cleaner(title), cleaner(decode(e.record.title)), 2, false) >= 0.95)
             .filter(e => allowTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
             .filter(e => m.startDate.year - 1 <= parseInt('' + e.record.year)
               && parseInt('' + e.record.year) <= m.startDate.year + 1); //check year +-1
