@@ -1,24 +1,9 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {Router} from 'express';
+import AniListController from '../controller/AniListController';
 
 export default function aniListRouter(): Router {
+  const controller = new AniListController();
   const router = Router();
-  router.post('/graphql', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const fromApi = await fetch('https://graphql.anilist.co/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      });
-
-      const fromApiText = await fromApi.text()
-      res.status(fromApi.status).send(fromApiText);
-    } catch (e) {
-      console.error(e);
-    }
-    next();
-  });
-
+  router.post('/graphql', controller.graphql.bind(controller));
   return router;
 }
