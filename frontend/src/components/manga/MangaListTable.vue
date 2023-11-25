@@ -6,7 +6,7 @@ import {BTable, type TableItem} from 'bootstrap-vue-next';
 import type {TableField, TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
-import {latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
+import {get, latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
 
 type HeadData<I> = {
   label: string,
@@ -89,7 +89,7 @@ export default class MangaListTable extends Vue {
     if (!this.sortKey) {
       return this.tableEntries;
     }
-    const keyExtractor = (e: ViewEntry) => eval('e.' + this.sortKey);//TODO eval is evil
+    const keyExtractor = (e: ViewEntry) => get(e, this.sortKey);//TODO eval is evil
     const comparer = (l: ViewEntry, r: ViewEntry) => {
       const lkey = keyExtractor(l);
       const rkey = keyExtractor(r);
