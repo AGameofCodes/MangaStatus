@@ -25,7 +25,7 @@ export default class MangaUpdatesDataService {
   }
 
   private async findMissingRelations(mangaStore: MangaStore, dbStore: DbStore, progress: Progress): Promise<void> {
-    const allowTypes = new Set(['Manga', 'Manhwa', 'Manhua'].map(e => e.toLowerCase()));
+    const allowedTypes = new Set(['Manga', 'Manhwa', 'Manhua'].map(e => e.toLowerCase()));
 
     const media = await dbStore.aniListMangaRepository.getMedia();
     const relations = await dbStore.mangaUpdatesRepository.getRelations();
@@ -59,7 +59,7 @@ export default class MangaUpdatesDataService {
           };
           matching = results.results
             .filter(e => stringSimilarity(cleaner(title), cleaner(decode(e.record.title)), 2, false) >= 0.95)
-            .filter(e => allowTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
+            .filter(e => allowedTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
             .filter(e => m.startDate.year - 1 <= parseInt('' + e.record.year)
               && parseInt('' + e.record.year) <= m.startDate.year + 1); //check year +-1
           if (matching.length === 0) {
