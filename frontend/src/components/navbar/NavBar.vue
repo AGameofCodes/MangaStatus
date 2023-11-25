@@ -29,6 +29,14 @@ export default class NavBar extends Vue {
       <div class="navbar-sidebar-toggler mx-1 c-pointer">
         <i class="fa fa-bars me-2" @click="$emit('toggleSidebar')"/>
       </div>
+      <div class="navbar-nav flex-row">
+        <div class="nav-item">
+          <RouterLink class="nav-link active" aria-current="page" to="/">List</RouterLink>
+        </div>
+        <div class="nav-item">
+          <RouterLink class="nav-link active" aria-current="page" to="/about">About</RouterLink>
+        </div>
+      </div>
     </div>
     <div>
       <div class="d-flex flex-row">
@@ -50,11 +58,16 @@ export default class NavBar extends Vue {
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins/breakpoints';
 
+nav.navbar .nav-item {
+  margin-inline-end: 1rem;
+}
+
 @include media-breakpoint-down(sm) {
   nav.navbar {
     --bs-navbar-padding-x: 0.5rem;
   }
 
+  nav.navbar .navbar-nav,
   nav.navbar .navbar-locale-select,
   nav.navbar .navbar-theme-switch {
     display: none;

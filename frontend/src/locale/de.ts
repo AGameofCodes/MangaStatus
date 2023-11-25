@@ -48,6 +48,10 @@ export const messagesDe = {
       found: 'gefunden',
     },
   },
+  menu: {
+    about: 'Über',
+    list: 'Liste',
+  },
   search: 'Suche',
   wakeLock: {
     notSupported: 'Wake lock wird nicht unterstützt! Das Gerät könnte Sync-Funktion unterbrechen.',

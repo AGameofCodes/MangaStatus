@@ -49,6 +49,10 @@ export const messagesEn = {
       found: 'found',
     },
   },
+  menu: {
+    about: 'About',
+    list: 'List',
+  },
   search: 'Search',
   wakeLock: {
     notSupported: 'Wake lock is not supported! The device could pause the sync function.',

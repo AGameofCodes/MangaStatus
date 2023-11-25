@@ -1,6 +1,7 @@
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
 import SideBarNavItem from '@/components/sidebar/SideBarNavItem.vue';
+import SideBarNavLink from '@/components/sidebar/SideBarNavLink.vue';
 import {Prop} from 'vue-property-decorator';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
@@ -13,6 +14,7 @@ import SideBarHead from '@/components/sidebar/SideBarHead.vue';
     LocaleSelector,
     SideBarHead,
     SideBarNavItem,
+    SideBarNavLink,
   },
   emits: {
     'close': undefined,
@@ -30,6 +32,13 @@ export default class SideBar extends Vue {
       <ul class="nav flex-column mb-auto">
         <li>
           <SideBarHead @close="$emit('close')"/>
+        </li>
+        <SideBarNavLink :text="$t('menu.list')" to="/" faIcon="fa-list"
+                        @click="$emit('close')"></SideBarNavLink>
+        <SideBarNavLink :text="$t('menu.about')" to="/about" faIcon="fa-question"
+                        @click="$emit('close')"></SideBarNavLink>
+        <li>
+          <hr class="m-0"/>
         </li>
         <SideBarNavItem :text="$t('locale')" faIcon="fa-language">
           <template #end>

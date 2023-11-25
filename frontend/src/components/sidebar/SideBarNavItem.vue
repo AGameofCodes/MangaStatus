@@ -19,7 +19,11 @@ export default class SideBarNavItem extends Vue {
     <slot>
       <div class="d-flex flex-row p-2 align-items-center">
         <i :class="[faIcon]" class="sidebar-nav-item-icon text-center fa"></i>
-        <span class="sidebar-nav-item-text me-auto">{{ text }}</span>
+        <span class="sidebar-nav-item-text me-auto">
+          <slot name="text" :text="text">
+            {{ text }}
+          </slot>
+        </span>
         <slot name="end"/>
       </div>
     </slot>
