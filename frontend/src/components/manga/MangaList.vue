@@ -19,6 +19,7 @@ export type ViewEntry = {
   relation: MangaUpdatesRelation | null,
   series: MangaUpdatesSeries | null,
   chapters: MangaUpdatesChapter[],
+  newChapters: number,
 };
 
 @Options({

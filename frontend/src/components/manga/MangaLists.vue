@@ -7,7 +7,7 @@ import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
 import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
 import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
-import groupBy from '@/util';
+import {newChapterCount} from '@/components/manga/util.manga';
 
 @Options({
   name: 'MangaLists',
@@ -49,13 +49,16 @@ export default class MangaLists extends Vue {
         const relation = this.relationsByAniListMediaId.get(e.mediaId) ?? null;
         const series = this.seriesById.get(relation?.mangaUpdatesSeriesId as any) ?? null;
         const chapters = this.chaptersBySeriesId.get(relation?.mangaUpdatesSeriesId as any) ?? [];
-        return ({
+        const viewEntry = {
           entry: e,
           media: media,
           relation: relation,
           series: series,
           chapters: chapters,
-        } as ViewEntry);
+          newChapters: 0,
+        } as ViewEntry;
+        viewEntry.newChapters = newChapterCount(viewEntry);
+        return viewEntry;
       }),
     }))
         .sort((l, r) => order.indexOf(l.list.name.toLowerCase()) - order.indexOf(r.list.name.toLowerCase()));

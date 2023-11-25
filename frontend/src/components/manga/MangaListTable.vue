@@ -3,7 +3,7 @@ import {Options, Vue} from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
 //@ts-ignore TS2307
-import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
+import type {TableField, TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
 import {latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
@@ -34,6 +34,8 @@ export default class MangaListTable extends Vue {
   readonly viewList!: ViewList;
 
   bTableRefreshHack = true;
+  sortKey: string | null = null;
+  sortAsc: boolean = false;
 
   //methods
   latestChaptersSorted = latestChaptersSorted;
@@ -44,36 +46,36 @@ export default class MangaListTable extends Vue {
     return [{
       key: 'media.coverImage.large',
       label: '',
-      sortable: true,
+      sortable: false,
       tdClass: 'c-pointer',
     }, {
       key: 'media.title.userPreferred',
       label: this.$t('manga.title'),
       sortable: true,
       tdClass: 'c-pointer',
+      thClass: 'c-pointer',
     }, {
       key: 'entry.score',
       label: this.$t('manga.score'),
       sortable: true,
       tdClass: 'text-center manga-column-score c-pointer',
-      thClass: 'text-center manga-column-score',
+      thClass: 'text-center manga-column-score c-pointer',
     }, {
       key: 'entry.progress',
       label: this.$t('manga.progress'),
       sortable: true,
       tdClass: 'text-end text-nowrap c-pointer',
-      thClass: 'text-end',
+      thClass: 'text-end c-pointer',
     }, {
       key: 'newChapters',
-      formatter: (value: never, key: never, item: ViewEntry) => this.newChapterCount(item),
       label: this.$t('manga.chapters.newCount'),
       sortable: true,
       tdClass: 'text-end c-pointer',
-      thClass: 'text-end',
+      thClass: 'text-end c-pointer',
     }, {
       key: 'latestChapters',
       label: this.$t('manga.chapters.latest'),
-      sortable: true,
+      sortable: false,
       tdClass: 'manga-column-latest-chapters c-pointer',
       thClass: 'manga-column-latest-chapters',
     }];
@@ -83,12 +85,53 @@ export default class MangaListTable extends Vue {
     return this.viewList.entries;
   }
 
+  get tableEntriesSorted(): ViewEntry[] {
+    if (!this.sortKey) {
+      return this.tableEntries;
+    }
+    const keyExtractor = (e: ViewEntry) => eval('e.' + this.sortKey);//TODO eval is evil
+    const comparer = (l: ViewEntry, r: ViewEntry) => {
+      const lkey = keyExtractor(l);
+      const rkey = keyExtractor(r);
+      if ([null, undefined].includes(lkey) && [null, undefined].includes(lkey)) {
+        return 0;
+      } else if ([null, undefined].includes(lkey) && ![null, undefined].includes(lkey)) {
+        return -1;
+      } else if (![null, undefined].includes(lkey) && [null, undefined].includes(lkey)) {
+        return 1;
+      } else if (typeof lkey === 'number' && typeof rkey === 'number') {
+        return lkey - rkey;
+      } else if (typeof lkey === 'string' && typeof rkey === 'string') {
+        return lkey.localeCompare(rkey);
+      } else if (lkey < rkey) {
+        return -1;
+      } else if (lkey > rkey) {
+        return 1;
+      }
+      return 0;
+    };
+    return [...this.tableEntries].sort((l, r) => comparer(l, r) * (this.sortAsc ? 1 : -1));
+  }
+
   cd<V = any>(data: V): CellData<ViewEntry, V> {
     return (data as CellData<ViewEntry, V>);
   }
 
   hd<V = any>(data: V): HeadData<V> {
     return (data as HeadData<V>);
+  }
+
+  onHeaderClicked(fieldKey: string, field: TableField<ViewEntry>, event: MouseEvent, isFooter: boolean): void {
+    if (!field.sortable) {
+      return;
+    }
+
+    if (this.sortKey === fieldKey) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortAsc = false;
+    }
+    this.sortKey = fieldKey;
   }
 
   onRowClicked(entry: TableItem<ViewEntry>): void {
@@ -109,9 +152,10 @@ export default class MangaListTable extends Vue {
 
 <template>
   <div>
-    <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntries" :primary-key="'id'"
+    <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntriesSorted" :primary-key="'id'"
             class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc
-            @row-clicked="onRowClicked as any /* TODO dumb typing issue */">
+            @row-clicked="onRowClicked as any /* TODO dumb typing issue */"
+            @head-clicked="onHeaderClicked">
       <template #cell(media.coverImage.large)="data">
         <img :src="data.value as string" alt="cover-img" class="list-cover"/>
       </template>
