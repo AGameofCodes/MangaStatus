@@ -89,7 +89,7 @@ export default class MangaListTable extends Vue {
     if (!this.sortKey) {
       return this.tableEntries;
     }
-    const keyExtractor = (e: ViewEntry) => get(e, this.sortKey);//TODO eval is evil
+    const keyExtractor = (e: ViewEntry) => get<any>(e, this.sortKey!);
     const comparer = (l: ViewEntry, r: ViewEntry) => {
       const lkey = keyExtractor(l);
       const rkey = keyExtractor(r);
