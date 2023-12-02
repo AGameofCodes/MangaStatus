@@ -19,6 +19,7 @@ export const messagesDe = {
       series: 'Kapitel',
     },
   },
+  filter: 'Filter',
   locale: 'Sprache',
   locales: messagesEn.locales,
   localStorage: {

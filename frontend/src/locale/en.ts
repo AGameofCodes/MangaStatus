@@ -17,6 +17,7 @@ export const messagesEn = {
       series: 'Series',
     },
   },
+  filter: 'Filter',
   locale: 'Language',
   locales: {
     'de': 'Deutsch',

@@ -7,6 +7,7 @@ import type {TableField, TableFieldObject} from 'bootstrap-vue-next/dist/src/typ
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
 import {get, latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
+import {decode} from 'html-entities';
 
 type HeadData<I> = {
   label: string,
@@ -27,6 +28,7 @@ type CellData<I, V> = {
 
 @Options({
   name: 'MangaListTable',
+  methods: {decode},
   components: {BTable, MangaEntryDetailsModal},
 })
 export default class MangaListTable extends Vue {
@@ -170,7 +172,7 @@ export default class MangaListTable extends Vue {
           </span>
           <template v-if="cd(data).item.series">
             <a :href="cd(data).item.series!.url" target="_blank">
-              {{ cd(data).item.series!.title }}
+              {{ decode(cd(data).item.series!.title) }}
             </a>
           </template>
           <span v-else>{{ $t('mangaupdates.relation.found') }}</span>

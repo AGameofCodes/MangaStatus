@@ -3,7 +3,7 @@ export type AniListMedia = {
   title: {
     userPreferred: string,
     romaji: string,
-    english: string,
+    english?: string,
     native: string,
   }
   coverImage: {

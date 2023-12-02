@@ -25,13 +25,13 @@ export default class App extends Vue {
 </script>
 
 <template>
-  <div class="h-100 w-100">
+  <div class="h-100 w-100 overflow-hidden">
     <LocaleSaver/>
     <DocumentLocaleSetter/>
     <StoragePersist/>
-    <SideBar ref="sidebar" class="h-100 w-100" :toggled="sidebarToggled"
+    <SideBar ref="sidebar" class="h-100 w-100 overflow-hidden" :toggled="sidebarToggled"
              @close="sidebarToggled=false"/>
-    <div class="d-flex flex-column h-100 w-100">
+    <div class="d-flex flex-column h-100 w-100 overflow-hidden">
       <NavBar @toggleSidebar="sidebarToggled = !sidebarToggled"/>
       <RouterView class="flex-grow-1"/>
     </div>
