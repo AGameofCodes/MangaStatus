@@ -1,4 +1,4 @@
-# MangaStatus
+# MangaStatus [![Build](https://github.com/AGameofCodes/MangaStatus/actions/workflows/node.js.yml/badge.svg)](https://github.com/AGameofCodes/MangaStatus/actions/workflows/node.js.yml)
 This is small personal project to get an overview what manga have new chapters available and how many.
 This project is hosted on https://mangastatus.agameof.codes/
 
