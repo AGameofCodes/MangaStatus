@@ -58,7 +58,7 @@ export default class MangaUpdatesDataService {
             return str.toLowerCase().replaceAll('"', '\'').replaceAll(' - ', ' ').replaceAll(': ', ' ');
           };
           matching = results.results
-            .filter(e => stringSimilarity(cleaner(title), cleaner(decode(e.record.title)), 2, false) >= 0.95)
+            .filter(e => stringSimilarity(cleaner(title ?? ""), cleaner(decode(e.record.title)), 2, false) >= 0.95)
             .filter(e => allowedTypes.has(e.record.type.toLowerCase())) //check if a manga or similar but not novel
             .filter(e => m.startDate.year - 1 <= parseInt('' + e.record.year)
               && parseInt('' + e.record.year) <= m.startDate.year + 1); //check year +-1

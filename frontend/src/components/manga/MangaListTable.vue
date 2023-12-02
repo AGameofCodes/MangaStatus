@@ -28,7 +28,6 @@ type CellData<I, V> = {
 
 @Options({
   name: 'MangaListTable',
-  methods: {decode},
   components: {BTable, MangaEntryDetailsModal},
 })
 export default class MangaListTable extends Vue {
@@ -43,6 +42,7 @@ export default class MangaListTable extends Vue {
   latestChaptersSorted = latestChaptersSorted;
   latestChapterString = latestChapterString;
   newChapterCount = newChapterCount;
+  decode = decode;
 
   get fields(): TableFieldObject<ViewEntry>[] {
     return [{
