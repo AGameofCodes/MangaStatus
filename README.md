@@ -1,5 +1,6 @@
 # MangaStatus
 This is small personal project to get an overview what manga have new chapters available and how many.
+This project is hosted on https://mangastatus.agameof.codes/
 
 ## Credits
 <div>
