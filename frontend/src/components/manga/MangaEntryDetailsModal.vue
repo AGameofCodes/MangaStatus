@@ -1,11 +1,11 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-facing-decorator';
 import {BModal} from 'bootstrap-vue-next';
 import type {ViewEntry} from '@/components/manga/MangaList.vue';
 import {Modal} from 'bootstrap';
 import {latestChaptersSorted, latestChapterString, newChapterCount} from './util.manga';
 
-@Options({
+@Component({
   name: 'MangaEntryDetailsModal',
   components: {BModal},
 })

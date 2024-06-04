@@ -1,12 +1,12 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import AniListUserSearch from '@/components/navbar/AniListUserSearch.vue';
 import MangaUpdatesUpdater from '@/components/navbar/MangaUpdatesUpdater.vue';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import Logo from '@/components/Logo.vue';
 
-@Options({
+@Component({
   name: 'NavBar',
   components: {
     AniListUserSearch,
@@ -16,8 +16,8 @@ import Logo from '@/components/Logo.vue';
     MangaUpdatesUpdater,
   },
   emits: {
-    'toggleSidebar': undefined,
-  },
+    'toggleSidebar': () => true,
+  } as any,
 })
 export default class NavBar extends Vue {
 }

@@ -1,8 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 
-@Options({
+@Component({
   name: 'SideBarNavItem',
   components: {},
 })

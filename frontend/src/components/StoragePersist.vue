@@ -1,8 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {toast} from 'vue3-toastify';
 
-@Options({name: 'StoragePersist'})
+@Component({name: 'StoragePersist'})
 export default class StoragePersist extends Vue {
   async mounted(): Promise<void> {
     if (!navigator.storage) {

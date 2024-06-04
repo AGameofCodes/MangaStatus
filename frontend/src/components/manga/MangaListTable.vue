@@ -1,6 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Component, Prop, Vue, Watch} from 'vue-facing-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
 //@ts-ignore TS2307
 import type {TableField, TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
@@ -26,7 +25,7 @@ type CellData<I, V> = {
   detailsShowing: boolean | undefined,
 }
 
-@Options({
+@Component({
   name: 'MangaListTable',
   components: {BTable, MangaEntryDetailsModal},
 })

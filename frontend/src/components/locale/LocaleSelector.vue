@@ -1,7 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 
-@Options({name: 'LocaleSelector'})
+@Component({name: 'LocaleSelector'})
 export default class LocaleSelector extends Vue {
   get locale(): string {
     return this.$i18n.locale;

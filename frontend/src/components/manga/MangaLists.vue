@@ -1,5 +1,5 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {MangaStore} from '@/stores/MangaStore';
 import MangaList, {type ViewEntry, type ViewList} from '@/components/manga/MangaList.vue';
 import {BTable} from 'bootstrap-vue-next';
@@ -10,7 +10,7 @@ import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesC
 import {newChapterCount} from '@/components/manga/util.manga';
 import FilterBar from '@/components/manga/FilterBar.vue';
 
-@Options({
+@Component({
   name: 'MangaLists',
   components: {FilterBar, MangaList, BTable},
 })

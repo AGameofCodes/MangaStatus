@@ -1,11 +1,11 @@
 <script lang="ts">
 import {Progress} from '@/data/service/Progress';
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {ServiceStore} from '@/stores/ServiceStore';
 import {BSpinner} from 'bootstrap-vue-next';
 import {toast} from 'vue3-toastify';
 
-@Options({
+@Component({
   name: 'MangaUpdatesUpdater',
   components: {
     BSpinner,

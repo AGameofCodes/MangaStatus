@@ -1,8 +1,8 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import MangaLists from '@/components/manga/MangaLists.vue';
 
-@Options({
+@Component({
   name: 'HomeView',
   components: {MangaLists},
 })

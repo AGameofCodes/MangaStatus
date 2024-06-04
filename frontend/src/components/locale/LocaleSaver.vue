@@ -1,8 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-facing-decorator';
 
-@Options({name: 'LocaleSaver'})
+@Component({name: 'LocaleSaver'})
 export default class LocaleSaver extends Vue {
   mounted(): void {
     const locale = window.localStorage.getItem('locale');

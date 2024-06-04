@@ -1,7 +1,6 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue, Watch} from 'vue-facing-decorator';
 import {reactive} from 'vue';
-import {Watch} from 'vue-property-decorator';
 
 const sharedDarkMode = reactive({
   internalDarkMode: false,
@@ -21,7 +20,7 @@ const sharedDarkMode = reactive({
   },
 });
 
-@Options({
+@Component({
   name: 'BootstrapThemeSwitch',
 })
 export default class BootstrapThemeSwitch extends Vue {

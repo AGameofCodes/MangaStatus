@@ -1,13 +1,12 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Prop, Vue} from 'vue-facing-decorator';
 import SideBarNavItem from '@/components/sidebar/SideBarNavItem.vue';
 import SideBarNavLink from '@/components/sidebar/SideBarNavLink.vue';
-import {Prop} from 'vue-property-decorator';
 import LocaleSelector from '@/components/locale/LocaleSelector.vue';
 import BootstrapThemeSwitch from '@/components/bootstrapThemeSwitch/BootstrapThemeSwitch.vue';
 import SideBarHead from '@/components/sidebar/SideBarHead.vue';
 
-@Options({
+@Component({
   name: 'SideBar',
   components: {
     BootstrapThemeSwitch,
@@ -17,8 +16,8 @@ import SideBarHead from '@/components/sidebar/SideBarHead.vue';
     SideBarNavLink,
   },
   emits: {
-    'close': undefined,
-  },
+    'close': () => true,
+  } as any,
 })
 export default class SideBar extends Vue {
   @Prop({default: false})

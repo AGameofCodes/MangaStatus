@@ -14,9 +14,9 @@
 </style>
 
 <script lang="ts">
-import {Options, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-facing-decorator';
 
-@Options({name: 'Logo'})
+@Component({name: 'Logo'})
 export default class Logo extends Vue {
 }
 </script>

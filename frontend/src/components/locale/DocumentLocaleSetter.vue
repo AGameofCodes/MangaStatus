@@ -1,8 +1,7 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-facing-decorator';
 
-@Options({name: 'DocumentLocaleSetter'})
+@Component({name: 'DocumentLocaleSetter'})
 export default class DocumentLocaleSetter extends Vue {
   mounted(): void {
     this.onLocaleChanged(this.$i18n.locale);

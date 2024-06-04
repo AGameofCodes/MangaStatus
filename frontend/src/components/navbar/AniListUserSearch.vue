@@ -1,10 +1,10 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import {MangaStore} from '@/stores/MangaStore';
 import {ServiceStore} from '@/stores/ServiceStore';
 import {BSpinner} from 'bootstrap-vue-next';
 
-@Options({
+@Component({
   name: 'AniListUserSearch',
   components: {
     BSpinner,

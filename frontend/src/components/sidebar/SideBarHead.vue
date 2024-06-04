@@ -1,13 +1,13 @@
 <script lang="ts">
-import {Options, Vue} from 'vue-class-component';
+import {Component, Vue} from 'vue-facing-decorator';
 import Logo from '@/components/Logo.vue';
 
-@Options({
+@Component({
   name: 'SideBar',
   components: {Logo},
   emits: {
-    'close': undefined,
-  },
+    'close': () => true,
+  } as any,
 })
 export default class SideBar extends Vue {
 }
