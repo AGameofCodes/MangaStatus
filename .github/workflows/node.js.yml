@@ -11,19 +11,18 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 16.x, 18.x, 20.x ]
-        project: [ frontend, backend ]
+        node-version: [21.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        project: [ frontend, backend ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }} to build ${{ matrix.project }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -34,3 +33,6 @@ jobs:
         working-directory: ${{ matrix.project }}
       - run: npm test --if-present
         working-directory: ${{ matrix.project }}
+      - run: npm run test:unit --if-present
+        working-directory: ${{ matrix.project }}
+
