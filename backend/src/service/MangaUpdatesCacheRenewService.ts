@@ -14,6 +14,7 @@ export default class MangaUpdatesCacheRenewService {
     await this.renewRelations();
     await this.renewSeries();
     await this.renewUpdates();
+    await this.renewSeriesIdByWebsiteIds();
     console.log('Renewing MangaUpdates cache done');
   }
 
@@ -66,7 +67,7 @@ export default class MangaUpdatesCacheRenewService {
 
   async renewUpdates(): Promise<void> {
     const ids = this.cache.getOutOfDateSeriesGroups();
-    console.log(ids.length + ' out-of-date series updates');
+    console.log(ids.length + ' out-of-date series group updates');
 
     for (let id of ids) {
       await new Promise((r) => setTimeout(r, MangaUpdatesCacheRenewService.delay));
@@ -78,6 +79,33 @@ export default class MangaUpdatesCacheRenewService {
 
         const fromApiJson = await fromApi.text();
         this.cache.putSeriesGroupsById(id, fromApiJson);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
+  async renewSeriesIdByWebsiteIds(): Promise<void> {
+    const ids = this.cache.getOutOfDateSeriesIdByWebsiteId();
+    console.log(ids.length + ' out-of-date seriesId by websiteId updates');
+
+    for (let id of ids) {
+      await new Promise((r) => setTimeout(r, MangaUpdatesCacheRenewService.delay));
+      try {
+        const fromApi = await fetch(id.match(/^[0-9]+$/)
+          ? 'https://www.mangaupdates.com/series.html?id=' + id
+          : 'https://www.mangaupdates.com/series/' + id);
+        if (fromApi.status !== 200) {
+          continue;
+        }
+
+        const fromApiHtml = await fromApi.text();
+        const match = fromApiHtml.match(/https:\/\/api.mangaupdates.com\/v1\/series\/([0-9]+)\/rss/);
+        if (!match) {
+          continue;
+        }
+        const json = JSON.stringify({website_id: id, series_id: parseInt(match[1]!)});
+        this.cache.putSeriesIdByWebsiteId(id, json);
       } catch (e) {
         console.error(e);
       }
