@@ -14,6 +14,7 @@ export class MangaStore extends Pinia {
   private cachedMedia: CompoundMedia[] = [];
   private cachedAniListUser: AniListUser | null = null;
   private cachedUserName: string | null = null;
+  private loading = false;
 
   private repo = new Repository();
 
@@ -37,6 +38,10 @@ export class MangaStore extends Pinia {
 
   get aniListUser(): AniListUser | null {
     return this.cachedAniListUser;
+  }
+
+  get isLoading(): boolean {
+    return this.loading;
   }
 
   get userName(): string | null {
@@ -84,12 +89,17 @@ export class MangaStore extends Pinia {
   async reloadCache(): Promise<void> {
     this.clearCache();
 
-    this.cachedMedia.push(...await this.repo.getMedia());
-    if (this.userName) {
-      this.cachedAniListUser = await this.repo.getUser(this.userName);
-      if (this.aniListUser) {
-        this.cachedAniListLists.push(...await this.repo.getMangaLists(this.aniListUser.id));
+    this.loading = true;
+    try {
+      this.cachedMedia.push(...await this.repo.getMedia());
+      if (this.userName) {
+        this.cachedAniListUser = await this.repo.getUser(this.userName);
+        if (this.aniListUser) {
+          this.cachedAniListLists.push(...await this.repo.getMangaLists(this.aniListUser.id));
+        }
       }
+    } finally {
+      this.loading = false;
     }
   }
 }

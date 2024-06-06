@@ -5,10 +5,16 @@ import MangaList, {type ViewEntry, type ViewList} from '@/components/manga/Manga
 import {BTable} from 'bootstrap-vue-next';
 import {newChapterCount} from '@/components/manga/util.manga';
 import FilterBar from '@/components/manga/FilterBar.vue';
+import Loading from '@/components/Loading.vue';
 
 @Component({
   name: 'MangaLists',
-  components: {FilterBar, MangaList, BTable},
+  components: {
+    BTable,
+    FilterBar,
+    Loading,
+    MangaList,
+  },
 })
 export default class MangaLists extends Vue {
   filter: string | undefined = '';
@@ -56,7 +62,8 @@ export default class MangaLists extends Vue {
     </div>
     <div class="flex-grow-1 overflow-y-auto">
       <div class="manga-lists">
-        <MangaList v-for="viewList in viewLists" :key="viewList.list.name" :viewList="viewList" class="mb-3"/>
+        <Loading v-if="mangaStore.isLoading"/>
+        <MangaList v-else v-for="viewList in viewLists" :key="viewList.list.name" :viewList="viewList" class="mb-3"/>
       </div>
     </div>
   </div>
