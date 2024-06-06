@@ -2,10 +2,10 @@
 import {Component, Prop, Vue, Watch} from 'vue-facing-decorator';
 import {BTable, type TableItem} from 'bootstrap-vue-next';
 //@ts-ignore TS2307
-import type {TableField, TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
+import type {TableFieldObject} from 'bootstrap-vue-next/dist/src/types';
 import type {ViewEntry, ViewList} from '@/components/manga/MangaList.vue';
 import MangaEntryDetailsModal from '@/components/manga/MangaEntryDetailsModal.vue';
-import {get, latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
+import {latestChaptersSorted, latestChapterString, newChapterCount} from '@/components/manga/util.manga';
 import {decode} from 'html-entities';
 
 type HeadData<I> = {
@@ -34,8 +34,6 @@ export default class MangaListTable extends Vue {
   readonly viewList!: ViewList;
 
   bTableRefreshHack = true;
-  sortKey: string | null = null;
-  sortAsc: boolean = false;
 
   //methods
   latestChaptersSorted = latestChaptersSorted;
@@ -86,53 +84,12 @@ export default class MangaListTable extends Vue {
     return this.viewList.entries;
   }
 
-  get tableEntriesSorted(): ViewEntry[] {
-    if (!this.sortKey) {
-      return this.tableEntries;
-    }
-    const keyExtractor = (e: ViewEntry) => get<any>(e, this.sortKey!);
-    const comparer = (l: ViewEntry, r: ViewEntry) => {
-      const lkey = keyExtractor(l);
-      const rkey = keyExtractor(r);
-      if ([null, undefined].includes(lkey) && [null, undefined].includes(lkey)) {
-        return 0;
-      } else if ([null, undefined].includes(lkey) && ![null, undefined].includes(lkey)) {
-        return -1;
-      } else if (![null, undefined].includes(lkey) && [null, undefined].includes(lkey)) {
-        return 1;
-      } else if (typeof lkey === 'number' && typeof rkey === 'number') {
-        return lkey - rkey;
-      } else if (typeof lkey === 'string' && typeof rkey === 'string') {
-        return lkey.localeCompare(rkey);
-      } else if (lkey < rkey) {
-        return -1;
-      } else if (lkey > rkey) {
-        return 1;
-      }
-      return 0;
-    };
-    return [...this.tableEntries].sort((l, r) => comparer(l, r) * (this.sortAsc ? 1 : -1));
-  }
-
   cd<V = any>(data: V): CellData<ViewEntry, V> {
     return (data as CellData<ViewEntry, V>);
   }
 
   hd<V = any>(data: V): HeadData<V> {
     return (data as HeadData<V>);
-  }
-
-  onHeaderClicked(fieldKey: string, field: TableField<ViewEntry>, event: MouseEvent, isFooter: boolean): void {
-    if (!field.sortable) {
-      return;
-    }
-
-    if (this.sortKey === fieldKey) {
-      this.sortAsc = !this.sortAsc;
-    } else {
-      this.sortAsc = false;
-    }
-    this.sortKey = fieldKey;
   }
 
   onRowClicked(entry: TableItem<ViewEntry>): void {
@@ -153,10 +110,9 @@ export default class MangaListTable extends Vue {
 
 <template>
   <div>
-    <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntriesSorted" :primary-key="'id'"
-            class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc
-            @row-clicked="onRowClicked as any /* TODO dumb typing issue */"
-            @head-clicked="onHeaderClicked">
+    <BTable ref="table" v-if="bTableRefreshHack" :fields="fields" :items="tableEntries" :primary-key="'id'"
+            class="manga-table" hover striped responsive no-sort-reset :sort-by="[{key: 'newChapters', order: 'desc'}]"
+            @row-clicked="onRowClicked">
       <template #cell(media.aniList.coverImage.large)="data">
         <img :src="data.value as string" alt="cover-img" class="list-cover"/>
       </template>
