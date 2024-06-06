@@ -47,9 +47,6 @@ export default class MangaDexDataService {
             .filter(e => allowedTypes.has(e.type))
             .filter(e => e.attributes.links?.al?.match(/[0-9]+/))
             .filter(e => parseInt(e.attributes.links!.al!) === m.aniList.id);
-          if (matching.length > 0) {
-            debugger;
-          }
 
           if (matching.length > 0) {
             m.mangaDex = matching[0];
