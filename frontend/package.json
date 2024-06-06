@@ -25,7 +25,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.21.0",
     "html-entities": "^2.5.2",
-    "idb": "^7.1.1",
+    "idb": "^8.0.0",
     "pinia": "^2.1.7",
     "pinia-class-component": "^0.9.4",
     "string-similarity-js": "^2.1.4",
