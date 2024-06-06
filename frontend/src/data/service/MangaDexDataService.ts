@@ -1,39 +1,34 @@
 import {MangaStore} from '@/stores/MangaStore';
-import {DbStore} from '@/stores/DbStore';
 import {ApiError} from '@/data/api/ApiUtils';
 import MangaDexApi from '@/data/api/MangaDexApi';
 import {Progress} from '@/data/service/Progress';
-import MangaUpdatesApi from '@/data/api/MangaUpdatesApi';
-import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
+import type CompoundMedia from '@/data/models/CompoundMedia';
+import type {MangaDexMedia} from '@/data/models/mangadex/MangaDexMedia';
 
 export default class MangaDexDataService {
   private readonly mangaDexApi = new MangaDexApi();
-  private readonly mangaUpdatesApi = new MangaUpdatesApi();
 
   updateDb(progress: Progress): Promise<void> {
-    const mangaStore = new MangaStore();
-    const dbStore = new DbStore();
-    return this.findMissingRelations(mangaStore, dbStore, progress)
+    const store = new MangaStore();
+    return this.findMissingRelations(store, progress)
       .catch(err => console.error(err))
       .then(_ => progress.onFinished());
   }
 
-  private async findMissingRelations(mangaStore: MangaStore, dbStore: DbStore, progress: Progress): Promise<void> {
+  private async findMissingRelations(store: MangaStore, progress: Progress): Promise<void> {
     const allowedTypes = new Set(['manga'].map(e => e.toLowerCase()));
 
-    const media = await dbStore.aniListMangaRepository.getMedia();
-    const relations = await dbStore.mangaUpdatesRepository.getRelations();
-    const presentRelationIds = new Set(relations.map(e => e.aniListMediaId));
+    const media = JSON.parse(JSON.stringify(store.media)) as CompoundMedia[];//deep copy
 
     let i = 0;
     for (const m of media) {
       try {
-        if (presentRelationIds.has(m.id)) {
+        if (m.mangaDex?.attributes.links?.mu) {
           continue;
         }
 
-        let matching: MangaUpdatesRelation[] = [];
-        for (let title of [m.title.native, m.title.romaji, m.title.english]) {
+        let matching: any[] = [];
+        for (let title of [m.aniList.title.native, m.aniList.title.romaji, m.aniList.title.english]) {
           if (!title?.trim().length) {
             continue;
           }
@@ -48,37 +43,24 @@ export default class MangaDexDataService {
             }
             continue;
           }
-          matching = results.data
+          matching = (results.data as MangaDexMedia[])
             .filter(e => allowedTypes.has(e.type))
-            .filter(e => e.attributes.links?.al?.match(/[0-9]+/) && e.attributes.links.mu)
-            .filter(e => parseInt(e.attributes.links!.al!) === m.id)
-            .map(e => ({
-              aniListMediaId: parseInt(e.attributes.links!.al!),
-              mangaUpdatesSeriesId: e.attributes.links!.mu! as any as number, //TODO cast is hack, make pretty
-            }));
-
-          for (let j = 0; j < matching.length; j++) {
-            try {
-              const websiteIdSeriesIdRelation = await this.mangaUpdatesApi.seriesIdByWebsiteId(matching[j].mangaUpdatesSeriesId);
-              matching[j].mangaUpdatesSeriesId = websiteIdSeriesIdRelation.series_id;
-            } catch(_) {
-              matching.splice(j--, 1);
-            }
+            .filter(e => e.attributes.links?.al?.match(/[0-9]+/))
+            .filter(e => parseInt(e.attributes.links!.al!) === m.aniList.id);
+          if (matching.length > 0) {
+            debugger;
           }
 
           if (matching.length > 0) {
+            m.mangaDex = matching[0];
             break;
           }
         }
-
-        if (matching.length === 0) {
-          continue;
-        }
-
-        await mangaStore.addMangaUpdatesRelations([matching[0]]);
       } finally {
         await progress.onProgress('mangaDex.relations', ++i, media.length);
       }
     }
+
+    await store.updateAniListMedia(media);
   }
 }

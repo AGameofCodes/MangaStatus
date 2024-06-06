@@ -1,13 +1,8 @@
 import {Pinia, Store} from 'pinia-class-component';
 import type {AniListUser} from '@/data/models/anilist/AniListUser';
-import {DbStore} from '@/stores/DbStore';
-import type {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
-import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {AniListMangaList} from '@/data/models/anilist/AniListMangaList';
-import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
-import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
-import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
-import groupBy from '@/util';
+import type CompoundMedia from '@/data/models/CompoundMedia';
+import Repository from '@/data/repository/Repository';
 
 @Store({
   id: 'MangaStore',
@@ -16,13 +11,11 @@ import groupBy from '@/util';
 export class MangaStore extends Pinia {
   //update trigger
   private cachedAniListLists: AniListMangaList[] = [];
-  private cachedAniListManga = new Map<string, AniListMangaListEntry[]>();
-  private cachedAniListMedia: AniListMedia[] = [];
+  private cachedMedia: CompoundMedia[] = [];
   private cachedAniListUser: AniListUser | null = null;
-  private cachedMangaUpdatesChaptersBySeriesId: Map<number, MangaUpdatesChapter[]> = new Map();
-  private cachedMangaUpdatesSeries: MangaUpdatesSeries[] = [];
-  private cachedMangaUpdatesRelations: MangaUpdatesRelation[] = [];
   private cachedUserName: string | null = null;
+
+  private repo = new Repository();
 
   constructor() {
     super();
@@ -34,90 +27,42 @@ export class MangaStore extends Pinia {
     return this.cachedAniListLists;
   }
 
-  get aniListManga(): Map<string, AniListMangaListEntry[]> {
-    return this.cachedAniListManga;
+  get media(): CompoundMedia[] {
+    return this.cachedMedia;
   }
 
-  get aniListMedia(): AniListMedia[] {
-    return this.cachedAniListMedia;
+  get mediaByAniListId(): Map<number, CompoundMedia> {
+    return new Map(this.cachedMedia.map(e => [e.aniList.id, e]));
   }
 
   get aniListUser(): AniListUser | null {
     return this.cachedAniListUser;
   }
 
-  get mangaUpdatesChapters(): Map<number, MangaUpdatesChapter[]> {
-    return this.cachedMangaUpdatesChaptersBySeriesId;
-  }
-
-  get mangaUpdatesRelations(): MangaUpdatesRelation[] {
-    return this.cachedMangaUpdatesRelations;
-  }
-
-  get mangaUpdatesSeries(): MangaUpdatesSeries[] {
-    return this.cachedMangaUpdatesSeries;
-  }
-
   get userName(): string | null {
     return this.cachedUserName;
   }
 
-  //stores
-  private get dbStore(): DbStore {
-    return new DbStore();
-  }
-
   //actions
   async updateAniListLists(userId: number, lists: AniListMangaList[]): Promise<void> {
-    await this.dbStore.aniListMangaRepository.patchLists(userId, lists);
+    await this.repo.updateLists(userId, lists);
     if (this.aniListUser?.id === userId) {
       this.cachedAniListLists.splice(0);
       this.cachedAniListLists.push(...lists);
     }
   }
 
-  async updateAniListManga(userId: number, manga: Map<string, AniListMangaListEntry[]>): Promise<void> {
-    await this.dbStore.aniListMangaRepository.patchManga(userId, manga);
-    if (this.aniListUser?.id === userId) {
-      this.cachedAniListManga.clear();
-      manga.forEach((v, k) => this.cachedAniListManga.set(k, v));
-    }
-  }
-
-  async updateAniListMedia(media: AniListMedia[]): Promise<void> {
-    await this.dbStore.aniListMangaRepository.updateMedia(media);
-    this.cachedAniListMedia.splice(0);
-    this.cachedAniListMedia.push(...media);
+  async updateAniListMedia(media: CompoundMedia[]): Promise<void> {
+    await this.repo.updateMedia(media);
+    this.cachedMedia.splice(0);
+    this.cachedMedia.push(...media);
   }
 
   async updateAniListUser(user: AniListUser): Promise<void> {
-    await this.dbStore.aniListUserRepository.updateUser(user);
+    await this.repo.updateUser(user);
     if (user.name === this.userName) {
       this.cachedAniListUser = user;
     }
-  }
-
-  async updateMangaUpdatesChapters(chapters: MangaUpdatesChapter[]): Promise<void> {
-    await this.dbStore.mangaUpdatesRepository.updateChapters(chapters);
-
-    // update cache
-    const chaptersBySeriesId = groupBy(chapters, c => c.series_id);
-    chaptersBySeriesId.forEach((v, k) => this.cachedMangaUpdatesChaptersBySeriesId.set(k, v));
-  }
-
-  async updateMangaUpdatesSeries(media: MangaUpdatesSeries[]): Promise<void> {
-    await this.dbStore.mangaUpdatesRepository.updateSeries(media);
-
-    // update cache
-    const cachedById = new Map<number, MangaUpdatesSeries>(this.cachedMangaUpdatesSeries.map(e => [e.series_id, e]));
-    media.forEach(m => cachedById.set(m.series_id, m));
-    this.cachedMangaUpdatesSeries.splice(0);
-    this.cachedMangaUpdatesSeries.push(...Array.from(cachedById.values()));
-  }
-
-  async addMangaUpdatesRelations(relations: MangaUpdatesRelation[]): Promise<void> {
-    await this.dbStore.mangaUpdatesRepository.addRelations(relations);
-    this.cachedMangaUpdatesRelations.push(...relations);
   }
 
   updateUserName(userName: string | null): void {
@@ -131,31 +76,20 @@ export class MangaStore extends Pinia {
   }
 
   clearCache(): void {
-    this.cachedAniListManga.clear();
     this.cachedAniListLists.splice(0);
-    this.cachedAniListMedia.splice(0);
+    this.cachedMedia.splice(0);
     this.cachedAniListUser = null;
-    this.cachedMangaUpdatesChaptersBySeriesId.clear();
-    this.cachedMangaUpdatesSeries.splice(0);
-    this.cachedMangaUpdatesRelations.splice(0);
   }
 
   async reloadCache(): Promise<void> {
     this.clearCache();
 
-    this.cachedAniListMedia.push(...await this.dbStore.aniListMangaRepository.getMedia());
+    this.cachedMedia.push(...await this.repo.getMedia());
     if (this.userName) {
-      this.cachedAniListUser = await this.dbStore.aniListUserRepository.getUser(this.userName);
+      this.cachedAniListUser = await this.repo.getUser(this.userName);
       if (this.aniListUser) {
-        this.cachedAniListLists.push(...await this.dbStore.aniListMangaRepository.getMangaLists(this.aniListUser.id));
-        const manga = await this.dbStore.aniListMangaRepository.getManga(this.aniListUser.id);
-        manga.forEach((v, k) => this.cachedAniListManga.set(k, v));
+        this.cachedAniListLists.push(...await this.repo.getMangaLists(this.aniListUser.id));
       }
     }
-
-    const chapters = groupBy(await this.dbStore.mangaUpdatesRepository.getChapters(), e => e.series_id);
-    chapters.forEach((seriesChapters, seriesId) => this.cachedMangaUpdatesChaptersBySeriesId.set(seriesId, seriesChapters));
-    this.cachedMangaUpdatesSeries.push(...await this.dbStore.mangaUpdatesRepository.getSeries());
-    this.cachedMangaUpdatesRelations.push(...await this.dbStore.mangaUpdatesRepository.getRelations());
   }
 }

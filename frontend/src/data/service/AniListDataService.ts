@@ -1,8 +1,8 @@
 import AniListApi from '@/data/api/AniListApi';
 import {MangaStore} from '@/stores/MangaStore';
-import type {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
 import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {AniListMangaList} from '@/data/models/anilist/AniListMangaList';
+import type CompoundMedia from '@/data/models/CompoundMedia';
 
 export default class AniListDataService {
   async updateDb(): Promise<void> {
@@ -18,29 +18,27 @@ export default class AniListDataService {
     await store.updateAniListUser(user);
 
     const manga = await api.fetchManga(user.id);
-    const lists = manga.lists
-      .map(e => {
-        const ret = {...e} as AniListMangaList; //shallow copy
-        delete (ret as any).entries;
-        return ret;
-      });
-    const mangaByList = new Map<string, AniListMangaListEntry[]>(manga.lists
-      .map(list => {
-        const entries = [...list.entries.map(manga => {
-          const ret = {...manga} as AniListMangaListEntry; //shallow copy
-          delete (ret as any).media;
-          return ret;
-        })];
-        return [list.name, entries];
-      }));
-
-    const media = manga.lists
-      .map(e => e.entries.map(e => e.media)).flat()
-      .filter(e => e)//not null
-      .map(e => ({...e} as AniListMedia)); //shallow copy
-
+    const lists = (JSON.parse(JSON.stringify(manga.lists)) as AniListMangaList[]);//deep copy
+    lists.forEach(list => list.entries.forEach(ret => delete ret.media)); //delete media from entries
     await store.updateAniListLists(user.id, lists);
-    await store.updateAniListManga(user.id, mangaByList);
-    await store.updateAniListMedia(media);
+
+    const storeMedia = JSON.parse(JSON.stringify(store.media)) as CompoundMedia[];//deep copy
+    const storeMediaById = new Map(storeMedia.map(e => [e.aniList.id, e]));
+    manga.lists
+      .map(list => list.entries.map(e => e.media)).flat()
+      .filter(media => !!media)
+      .map(media => JSON.parse(JSON.stringify(media)) as AniListMedia)//deep copy
+      .forEach(media => {
+        let compoundMedia: CompoundMedia;
+        if (!storeMediaById.has(media.id)) {
+          compoundMedia = {aniList: media} as CompoundMedia;
+          storeMediaById.set(media.id, compoundMedia);
+        } else {
+          compoundMedia = storeMediaById.get(media.id)!;
+        }
+        compoundMedia.aniList = media;
+      });
+
+    await store.updateAniListMedia([...storeMediaById.values()]);
   }
 }

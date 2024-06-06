@@ -45,11 +45,6 @@ export const messagesEn = {
     },
     title: 'Title',
   },
-  mangaupdates: {
-    relation: {
-      found: 'found',
-    },
-  },
   menu: {
     about: 'About',
     list: 'List',

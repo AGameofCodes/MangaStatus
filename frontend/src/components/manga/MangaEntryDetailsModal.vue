@@ -35,14 +35,14 @@ export default class MangaEntryDetailsModal extends Vue {
       <div class="modal-content" v-if="entry">
         <div class="modal-header">
           <div class="modal-title">
-            <div class="mb-0">{{ entry.media?.title?.native }}</div>
-            <div style="font-size: 0.5em">{{ entry.media?.title?.english ?? entry.media?.title?.romaji }}</div>
+            <div class="mb-0">{{ entry.media?.aniList.title?.native }}</div>
+            <div style="font-size: 0.5em">{{ entry.media?.aniList.title?.english ?? entry.media?.aniList.title?.romaji }}</div>
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="d-flex flex-row">
-            <img :src="entry.media?.coverImage.large as string" alt="cover-img" class="modal-cover"/>
+            <img :src="entry.media?.aniList.coverImage.large as string" alt="cover-img" class="modal-cover"/>
             <div class="ms-1">
 
               <!--          <div>-->
@@ -65,7 +65,7 @@ export default class MangaEntryDetailsModal extends Vue {
                 {{ $t('manga.chapters.newCount') + ': ' + newChapterCount(entry) }}
               </div>
 
-              <div v-if="entry.chapters.length">
+              <div v-if="entry.media?.mangaUpdatesChapters?.length">
                 <div>{{ $t('manga.chapters.latest') + ': ' }}</div>
                 <ul class="mb-0 ps-3">
                   <li v-for="c in latestChaptersSorted(entry)">
@@ -74,19 +74,24 @@ export default class MangaEntryDetailsModal extends Vue {
                 </ul>
               </div>
 
-              <div v-if="entry.relation">
+              <div v-if="entry.media?.mangaDex">
+                <span>
+                  MangaDex:
+                </span>
+                <a :href="'https://mangadex.org/title/' + entry.media!.mangaDex!.id" target="_blank">
+                  {{ entry.media!.mangaDex!.attributes.title['en'] }}
+                </a>
+              </div>
+              <div v-if="entry.media?.mangaUpdates">
                 <span>
                   MangaUpdates:
                 </span>
-                <template v-if="entry.series">
-                  <a :href="entry.series!.url" target="_blank">
-                    {{ entry.series!.title }}
-                  </a>
-                  <!--                  <span class="ms-auto">-->
-                  <!--                    {{ formatDateTimeSeconds(new Date(entry.series!.last_updated.as_rfc3339)) }}-->
-                  <!--                  </span>-->
-                </template>
-                <span v-else>{{ $t('mangaupdates.relation.found') }}</span>
+                <a :href="entry.media.mangaUpdates.url" target="_blank">
+                  {{ entry.media.mangaUpdates.title }}
+                </a>
+                <!--                  <span class="ms-auto">-->
+                <!--                    {{ formatDateTimeSeconds(new Date(entry.series!.last_updated.as_rfc3339)) }}-->
+                <!--                  </span>-->
               </div>
             </div>
           </div>

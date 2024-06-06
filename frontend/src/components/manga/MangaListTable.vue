@@ -45,12 +45,12 @@ export default class MangaListTable extends Vue {
 
   get fields(): TableFieldObject<ViewEntry>[] {
     return [{
-      key: 'media.coverImage.large',
+      key: 'media.aniList.coverImage.large',
       label: '',
       sortable: false,
       tdClass: 'c-pointer',
     }, {
-      key: 'media.title.userPreferred',
+      key: 'media.aniList.title.userPreferred',
       label: this.$t('manga.title'),
       sortable: true,
       tdClass: 'c-pointer',
@@ -157,24 +157,29 @@ export default class MangaListTable extends Vue {
             class="manga-table" hover striped responsive no-sort-reset sort-by="newChapters" sort-desc
             @row-clicked="onRowClicked as any /* TODO dumb typing issue */"
             @head-clicked="onHeaderClicked">
-      <template #cell(media.coverImage.large)="data">
+      <template #cell(media.aniList.coverImage.large)="data">
         <img :src="data.value as string" alt="cover-img" class="list-cover"/>
       </template>
-      <template #cell(media.title.userPreferred)="data">
+      <template #cell(media.aniList.title.userPreferred)="data">
         <div class="flex-grow-1">
-          <div>{{ cd(data).item.media?.title.native }}</div>
-          <div>{{ cd(data).item.media?.title.english ?? cd(data).item.media?.title.romaji }}</div>
+          <div>{{ cd(data).item.media?.aniList.title.native }}</div>
+          <div>{{ cd(data).item.media?.aniList.title.english ?? cd(data).item.media?.aniList.title.romaji }}</div>
         </div>
-        <div v-if="cd(data).item.relation" class="d-flex flex-row" style="font-size: 0.5em">
+        <div v-if="cd(data).item.media?.mangaDex" class="d-flex flex-row" style="font-size: 0.5em">
+          <span>
+            MangaDex:&nbsp;
+          </span>
+          <a :href="'https://mangadex.org/title/' + cd(data).item.media!.mangaDex!.id" target="_blank">
+            {{ cd(data).item.media!.mangaDex!.attributes.title['en'] }}
+          </a>
+        </div>
+        <div v-if="cd(data).item.media?.mangaUpdates" class="d-flex flex-row" style="font-size: 0.5em">
           <span>
             MangaUpdates:&nbsp;
           </span>
-          <template v-if="cd(data).item.series">
-            <a :href="cd(data).item.series!.url" target="_blank">
-              {{ decode(cd(data).item.series!.title) }}
-            </a>
-          </template>
-          <span v-else>{{ $t('mangaupdates.relation.found') }}</span>
+          <a :href="cd(data).item.media!.mangaUpdates!.url" target="_blank">
+            {{ decode(cd(data).item.media!.mangaUpdates!.title) }}
+          </a>
         </div>
       </template>
       <template #head(entry.score)="data">

@@ -17,5 +17,5 @@ export type AniListMangaListEntry = {
   updatedAt: number
   startedAt: any,
   completedAt: any,
-  media: AniListMedia,
+  media?: AniListMedia,
 }

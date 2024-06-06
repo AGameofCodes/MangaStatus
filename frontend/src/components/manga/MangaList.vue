@@ -2,11 +2,8 @@
 import {Component, Prop, Vue} from 'vue-facing-decorator';
 import MangaListTable from '@/components/manga/MangaListTable.vue';
 import type {AniListMangaListEntry} from '@/data/models/anilist/AniListMangaListEntry';
-import type {AniListMedia} from '@/data/models/anilist/AniListMedia';
 import type {AniListMangaList} from '@/data/models/anilist/AniListMangaList';
-import type {MangaUpdatesRelation} from '@/data/models/mangaupdates/MangaUpdatesRelation';
-import type {MangaUpdatesSeries} from '@/data/models/mangaupdates/MangaUpdatesSeries';
-import type {MangaUpdatesChapter} from '@/data/models/mangaupdates/MangaUpdatesChapter';
+import type CompoundMedia from '@/data/models/CompoundMedia';
 
 export type ViewList = {
   list: AniListMangaList,
@@ -14,10 +11,7 @@ export type ViewList = {
 }
 export type ViewEntry = {
   entry: AniListMangaListEntry,
-  media: AniListMedia | null,
-  relation: MangaUpdatesRelation | null,
-  series: MangaUpdatesSeries | null,
-  chapters: MangaUpdatesChapter[],
+  media: CompoundMedia | null,
   newChapters: number,
 };
 
