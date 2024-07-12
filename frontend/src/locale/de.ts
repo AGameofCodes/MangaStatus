@@ -25,7 +25,7 @@ export const messagesDe = {
   localStorage: {
     notSupported: 'Lokaler Speicher wird nicht unterstützt. Diese Anwendung funktioniert möglicherweise nicht!',
     persistent: {
-      notSupported: 'Lokaler Speicher wird nicht persistent. Das könnte in längere Wartezeiten verursachen!',
+      notSupported: 'Lokaler Speicher wird nicht persistiert. Das könnte längere Wartezeiten verursachen!',
     },
   },
   manga: {
