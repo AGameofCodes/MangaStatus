@@ -23,7 +23,7 @@
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "bootstrap-vue-next": "^0.21.0",
+    "bootstrap-vue-next": "^0.26.0",
     "html-entities": "^2.5.2",
     "idb": "^8.0.0",
     "pinia": "^2.1.7",
