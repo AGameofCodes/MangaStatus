@@ -96,15 +96,15 @@ export default class MangaListTable extends Vue {
     (this.$refs.detailsModal as MangaEntryDetailsModal).open(entry);
   }
 
-  @Watch('viewList', {deep: true})
-  private onViewListChanged(): void {
-    this.bTableRefreshHack = false;
-    this.$nextTick(() => {
-      this.bTableRefreshHack = true;
-      // (this.$refs.table as any).refresh();
-      // (this.$refs.table as any).$forceUpdate();
-    });
-  }
+  // @Watch('viewList', {deep: true})
+  // private onViewListChanged(): void {
+    // this.bTableRefreshHack = false;
+    // this.$nextTick(() => {
+    //   this.bTableRefreshHack = true;
+    //   // (this.$refs.table as any).refresh();
+    //   // (this.$refs.table as any).$forceUpdate();
+    // });
+  // }
 }
 </script>
 
