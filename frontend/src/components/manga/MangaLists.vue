@@ -33,7 +33,7 @@ export default class MangaLists extends Vue {
       entries: (l.entries ?? [])
           .filter(e => { // apply filter if set
             const media = this.mangaStore.mediaByAniListId.get(e.mediaId);
-            return !this.filter?.trim().length
+            return !filterparts.length
                 || filterparts.some(fp => media!.aniList.title.english?.toLowerCase().includes(fp))
                 || filterparts.some(fp => media!.aniList.title.native?.toLowerCase().includes(fp))
                 || filterparts.some(fp => media!.aniList.title.romaji?.toLowerCase().includes(fp));
