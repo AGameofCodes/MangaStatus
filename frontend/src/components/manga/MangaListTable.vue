@@ -139,25 +139,25 @@ export default class MangaListTable extends Vue {
         </div>
       </template>
       <template #head(entry.score)="data">
-        <div class="table-header-mobile"><i class="fa fa-star" style="color: var(--bs-orange)"/></div>
-        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+        <span class="table-header-mobile"><i class="fa fa-star" style="color: var(--bs-orange)"/></span>
+        <span class="table-header-desktop"> {{ hd(data).label }}</span>
       </template>
       <template #cell(entry.score)="data">
-        <div class="table-data-mobile">{{ cd(data).value }}</div>
-        <div class="table-data-desktop">
+        <span class="table-data-mobile">{{ cd(data).value }}</span>
+        <span class="table-data-desktop">
           <i class="fa fa-star" style="color: var(--bs-orange)"/> {{ cd(data).value }}
-        </div>
+        </span>
       </template>
       <template #head(entry.progress)="data">
-        <div class="table-header-mobile"><i class="fa fa-bars-progress"/></div>
-        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+        <span class="table-header-mobile"><i class="fa fa-bars-progress"/></span>
+        <span class="table-header-desktop"> {{ hd(data).label }}</span>
       </template>
       <template #cell(entry.progress)="data">
         {{ cd(data).value + '/' + latestChapterString(cd(data).item) }}
       </template>
       <template #head(newChapters)="data">
-        <div class="table-header-mobile"><i class="fa fa-plus" style="color: var(--bs-success)"/></div>
-        <div class="table-header-desktop"> {{ hd(data).label }}</div>
+        <span class="table-header-mobile"><i class="fa fa-plus" style="color: var(--bs-success)"/></span>
+        <span class="table-header-desktop"> {{ hd(data).label }}</span>
       </template>
       <template #cell(latestChapters)="data">
         <div v-for="c in latestChaptersSorted(cd(data).item)">
