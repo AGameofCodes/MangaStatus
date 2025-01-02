@@ -26,7 +26,7 @@ export default class NavBar extends Vue {
 
 <template>
   <!-- z-index needed, otherwise shadow not showing -->
-  <nav class="navbar border-bottom shadow flex-nowrap" style="z-index: 1">
+  <nav class="navbar border-bottom shadow flex-nowrap" style="z-index: 2">
     <div>
       <div class="navbar-sidebar-toggler mx-1 c-pointer">
         <i class="fa fa-bars me-2" @click="$emit('toggleSidebar')"/>
