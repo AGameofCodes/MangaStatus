@@ -8,6 +8,6 @@ export default function catchAllRedirect(app: Express, path: string): RequestHan
     }
 
     req.url = path;
-    (app as any).handle(req, res); //handle() is not exposed by .d.ts files
+    app(req, res);
   };
 }
