@@ -2,7 +2,7 @@
   "name": "mangastatus-backend",
   "version": "1.0.0",
   "private": true,
-  "node": ">=21.0.0",
+  "node": ">=24.0.0",
   "author": "wea_ondara",
   "license": "ISC",
   "scripts": {
