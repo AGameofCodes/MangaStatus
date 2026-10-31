@@ -41,7 +41,7 @@
     "@tsconfig/node24": "^24.0.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jsdom": "^30.0.0",
-    "@types/node": "^20.17.11",
+    "@types/node": "^26.0.0",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^14.2.0",
