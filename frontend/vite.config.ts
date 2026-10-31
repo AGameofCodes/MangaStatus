@@ -30,6 +30,13 @@ export default defineConfig({
       },
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true, //needed because bootstrap still uses @import instead of @use; see https://sass-lang.com/blog/import-is-deprecated/
+      },
+    },
+  },
   clearScreen: false,
   server: {
     proxy: {//for dev
