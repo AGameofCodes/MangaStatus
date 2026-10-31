@@ -63,5 +63,10 @@
   },
   "devDependenciesNotes": {
     "sass:1.79.6": "needed because bootstrap still uses @import instead of @use; see https://sass-lang.com/blog/import-is-deprecated/"
+  },
+  "allowScripts": {
+    "cypress": true,
+    "esbuild": true,
+    "vue-demi": true
   }
 }

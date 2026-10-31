@@ -29,5 +29,8 @@
     "npm-run-all2": "^9.0.0",
     "typescript": "^5.7.2",
     "wait-on": "^9.0.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
   }
 }
