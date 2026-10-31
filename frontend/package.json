@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.4",
-    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/node24": "^24.0.0",
     "@types/bootstrap": "^5.2.10",
     "@types/jsdom": "^30.0.0",
     "@types/node": "^20.17.11",
