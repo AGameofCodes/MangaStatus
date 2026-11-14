@@ -59,7 +59,7 @@
     "typescript": "~5.9.0",
     "vite": "^8.0.0",
     "vitest": "^5.0.0",
-    "vue-tsc": "^2.2.0"
+    "vue-tsc": "^3.0.0"
   },
   "devDependenciesNotes": {
     "sass:1.79.6": "needed because bootstrap still uses @import instead of @use; see https://sass-lang.com/blog/import-is-deprecated/"
